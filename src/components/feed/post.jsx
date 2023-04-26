@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 function Post ({ handleConnect }) {
   const classes = useStyles();
 
-const [message,setMessage] =useState('this is a sample message')
+const [message,setMessage] =useState('')
 const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -42,7 +42,7 @@ const { user } = useSelector((state) => state.auth);
             pb: 2,
             margin: 'auto',
             maxWidth: {xl:1100,lg:900,md:800,sm:650},
-            border: '1px solid black',
+            border: '1px solid lightgrey',
             flexGrow: 1,
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -50,9 +50,9 @@ const { user } = useSelector((state) => state.auth);
         >
           <Grid container spacing={2}>
             <Grid item xs container direction="column" spacing={0}>
-                <div style={{width: '100%', height: '127px', border: '1px solid black'}}>
+                <div style={{width: '100%', height: '127px', border: '1px solid lightgray'}}>
                  <textarea  style={{width: '100%', height: '100%'}} 
-          value={message} onChange ={(e)=>setMessage(e.target.value)}/>
+          value={message}  placeholder="write a message here..." onChange ={(e)=>setMessage(e.target.value)}/>
                 </div>
             </Grid>
           </Grid>

@@ -203,26 +203,26 @@ export default function CJobList({jobs}) {
           <>
        
 
-         {<div style={{float: 'right', border: '0px solid red'}}>
-        <Button
+         {/*<div style={{float: 'right', border: '0px solid red'}}>
+        <Buttong
             type="submit"
            
             variant="contained"
             style={{
-              backgroundColor: '#000000' /*"#60A1EC"*/,
+              backgroundColor: '#000000' "#60A1EC",
               color: "white",
               fontSize: "15px",
             }}
             sx={{ mt: 7, mb: 2 }}
              
-            onClick={() => {console.log("this button is supposed to move you to an add user page")/*window.location.href = "/company/add-jobs"*/}}
+            onClick={() => {console.log("this button is supposed to move you to an add user page")window.location.href = "/company/add-jobs"}}
           >
             ADD USER
-          </Button>
+          </Buttong>
             
 
 
-      </div>}
+      </div>*/}
       
       <br/>
       <p style={{fontSize: '26px', marginLeft: '5px', color: 'black'}}><b>ALL CMC USERS</b></p><br/>
@@ -232,12 +232,12 @@ export default function CJobList({jobs}) {
           <TableHead>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell align="right">Email</StyledTableCell>
-              <StyledTableCell align="right">Business Name</StyledTableCell>
+              <StyledTableCell align="right">Badge</StyledTableCell>
+              <StyledTableCell align="right">Registered</StyledTableCell>
               
-              <StyledTableCell align="right">Industry</StyledTableCell>
+              {/*<StyledTableCell align="right">Industry</StyledTableCell>
               <StyledTableCell align="center">State</StyledTableCell>
-              <StyledTableCell align="right"></StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>*/}
               <StyledTableCell align="right"></StyledTableCell>
              
             </TableRow>
@@ -252,7 +252,7 @@ export default function CJobList({jobs}) {
             ).map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.firstName?row.firstName + " " + row.lastName:row.name}
+                  {row.businessName}
                 </TableCell>
                 <TableCell style={{ width: 140 }} align="right">
                   {row.email}
@@ -262,16 +262,10 @@ export default function CJobList({jobs}) {
                 </TableCell>*/}
                 
                 <TableCell style={{ width: 140 }} align="right">
-                {row.businessName}
+                {row.registeredOn &&typeof(row.registeredOn) !== "string"  ?(new Date(row.registeredOn.seconds*1000)).toDateString():row.accountCreated}
                 </TableCell>
 
-                <TableCell style={{ width: 140 }} align="right">
-                {row.industry}
-                </TableCell>
-
-                <TableCell style={{ width: 140 }} align="right">
-                {row.state}
-                </TableCell>
+               
 
                 <TableCell style={{ width: 180 }} align="right">
                   <Button
@@ -292,31 +286,31 @@ export default function CJobList({jobs}) {
                 </TableCell>
 
 
-                <TableCell style={{ width: 180 }} align="right">
+                {/*<TableCell style={{ width: 180 }} align="right">
                   <Button
                     type="submit"
                     // fullWidth
                     variant="contained"
                     style={{
-                      backgroundColor: '#000000'  /*"#60A1EC"*/,
+                      backgroundColor: '#000000' ,
                       color: "white",
                       width: "70%",
                       fontSize: "15px",
                     }}
                     sx={{ mt: 7, mb: 2 }}
-                    onClick={console.log("i am supposed to delete")/*() => deleteJobFxn(row.id)*/}
+                    onClick={console.log("i am supposed to delete");() => deleteJobFxn(row.id)}
                   >
                     DELETE
                   </Button>
-                </TableCell>
+                </TableCell>*/}
               </TableRow>
             ))}
 
-            {emptyRows > 0 && (
+            {/*emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
-            )}
+            )*/}
           </TableBody>
           <TableFooter>
             <TableRow>

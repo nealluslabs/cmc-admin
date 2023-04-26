@@ -17,7 +17,7 @@ export default function ChatWindow() {
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
         <Stack sx={{ flexGrow: 1 }}>
           {/* <ChatMessageList conversation={conversation} /> */}
-          <center><h4>You have joined {inboxDetails?.coolerName}</h4></center>
+          <center><h4>Message From: {inboxDetails?.coolerName}</h4></center>
           <Divider />
           <Grid
           container
@@ -26,8 +26,8 @@ export default function ChatWindow() {
           alignItems="flex-start"
           sx={{pl: 4, pt: 5}}
         >
-          <p style={{fontSize: '20px', margin: '10px 0'}}>Cooler Name: {inboxDetails?.coolerName}</p>
-          <p style={{fontSize: '20px', margin: '10px 0'}}>Cooler Fee: {fCurrency(inboxDetails?.amount)}</p>
+          <p style={{fontSize: '20px', margin: '10px 0'}}>Admin: {inboxDetails?.coolerName}</p>
+          <p style={{fontSize: '20px', margin: '10px 0'}}>Networking Event: {'12/03/23'} {/*fCurrency(inboxDetails?.amount)*/}</p>
           
         </Grid>
           

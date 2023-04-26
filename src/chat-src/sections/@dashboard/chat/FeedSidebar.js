@@ -17,6 +17,7 @@ import ChatAccount from './ChatAccount';
 import InboxListItem from './InboxListItem';
 import { useSelector } from 'react-redux';
 import FeedListItem from './FeedListItem';
+import FeedMiniBox from '../../../../components/home/feed-mini-box';
 
 // ----------------------------------------------------------------------
 
@@ -157,6 +158,7 @@ export default function FeedSidebar() {
            sx={{ ...(isSearchFocused && { display: 'none' }) }}
           /> */}
           <FeedListItem inboxMessages={inboxMessages} user={user} />
+          <FeedMiniBox/>
       </Scrollbar>
     </>
   );

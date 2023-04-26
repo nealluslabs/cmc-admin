@@ -1,176 +1,305 @@
-import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useTheme } from '@mui/material/styles';
-// import { Grid, Container, Typography, Paper, Button } from '@mui/material';
-import { Button, TextField } from '@mui/material';
-import {Box,Icon,Typography,CardMedia,CssBaseline,Grid,Container,FormControlLabel, Checkbox, makeStyles} from '@material-ui/core';
-import { usePaystackPayment, PaystackButton, PaystackConsumer } from 'react-paystack';
-import Modal from '@mui/material/Modal';
+import { Container,Grid, TextField, Typography, TextareaAutosize, Button, Paper,Divider,Box} from '@mui/material';
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UPLOADIMG from '../assets/images/upload.png';
+import { fetchGroups, fetchMyGroups, uploadGroupImage} from 'src/redux/actions/group.action';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import DEFAULTIMG from '../assets/images/rec.png';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { notifyErrorFxn } from 'src/utils/toast-fxn';
-import { updateProfile, uploadImage, uploadProfileImage } from 'src/redux/actions/auth.action';
+
+function SettingsPage() {
+  const navigate = useNavigate();
+  const [file, setFile] = useState();
+  const [file2, setFile2] = useState();
+  const [fileSize, setFileSize] = useState();
+  const [fileSize2, setFileSize2] = useState();
+  const [selectedFile, setSelectedFile] = useState({selectedFile: [], selectedFileName: []});
+  const [selectedFile2, setSelectedFile2] = useState({selectedFile2: [], selectedFileName2: []});
+  const dispatch = useDispatch();
+
+  const [title,setTitle] =useState('')
+  const [genre,setGenre] =useState('')
+  const [releaseDate,setReleaseDate] =useState('')
+  const [director,setDirector] =useState('')
+  const [cast,setCast] =useState([])
+  const [description,setDescription] =useState('')
+  const [trivia,setTrivia] =useState('')
+  
+  const groupData = {
+    title,
+    genre,
+    releaseDate,
+    director,
+    cast,
+    description,
+    trivia
+  }
 
 
-const useStyles = makeStyles((theme) => ({
-  textField: {
-  padding: '8px',
-   border: '0px solid grey',
-  },
-  paper: {
-    display: "flex",
-    width: "auto",
-  },
-  grid: {
-    width: "auto",
-  },
-  arrow: {
-    padding: theme.spacing(3),
-  },
-  box: {
-  //   padding: theme.spacing(3),
-    paddingLeft: theme.spacing(8),
-  },
-}));
+  const handleselectedFile = event => {
+    console.log("these are the picture deets!",event.target.files[0])
+    setSelectedFile({
+        selectedFile: event.target.files[0],
+        selectedFileName: event.target.files[0].name
+    });
+    
+    setFile(URL.createObjectURL(event.target.files[0]));
+    setFileSize(event.target.files[0].size)
+};
+  const handleselectedFile2 = event => {
+    console.log("these are the video deets!",event.target.files[0])
+    setSelectedFile2({
+        selectedFile2: event.target.files[0],
+        selectedFileName2: event.target.files[0].name
+    });
+    setFile2(URL.createObjectURL(event.target.files[0]));
+    setFileSize2(event.target.files[0].size)
+};
 
-export default function SettingsPage() {
-  const classes = useStyles();
-    const dispatch = useDispatch(); 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { user } = useSelector((state) => state.auth);
-    let today = new Date().toISOString().slice(0, 10);
-    let nextMonth = new Date(today);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
-    let nextMonthDate = nextMonth.toISOString().slice(0, 10);
 
-    const type = location?.state?.type;
-    const [loading, setLoading] = useState(false);
-    const [selectedFile, setSelectedFile] = useState({selectedFile: [], selectedFileName: []});
-    const [file, setFile] = useState();
-     const [state, setState] = useState({
-      paymentLink: user?.paymentLink ? user?.paymentLink : "",
-      password: "",
-      imageUrl: user?.imageUrl ? user?.imageUrl : "",
-    })
 
-    const handleChange = (e) => {
-      const value = e.target.value;
-      setState({
-        ...state,
-        [e.target.name]: value
-      });
-    }
+const uploadMovie = (movieData,video,image,navigate) => {
+if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!cast.length ||!trivia.length || !description.length || file === undefined || file2 === undefined){
+  console.log("THE EMPTY FIELDS ARE:",file)
+  notifyErrorFxn("Please make sure to fill in all fields")
+}else{
+ if( fileSize  > 10000000){
+  notifyErrorFxn("Image size too large! please upload a smaller picture.")
+ }
+ else if( fileSize2  > 20000000){
+  notifyErrorFxn("Video size too large! please upload a smaller video.")
+ }else{
+  dispatch(uploadGroupImage(movieData,video,image,navigate))
+ }
+}
+}
 
-    const handleselectedFile = event => {
-      setSelectedFile({
-          selectedFile: event.target.files[0],
-          selectedFileName: event.target.files[0].name
-      });
-      setFile(URL.createObjectURL(event.target.files[0]));
-  };
-
-    const settingsUpdate = (e) => {
-      e.preventDefault();
-    //   console.log("OLD SATE: ",state);
-      state.paymentLink = state.paymentLink == "" ? user?.paymentLink : state.paymentLink;
-    //   state.imageUrl = selectedFile.selectedFile == "" ? user?.imageUrl : selectedFile.selectedFile;
-    //   return;
-      setLoading(true);
-      const id = user.id;
-      const imageUrl = user.imageUrl;
-      if(selectedFile.selectedFile.length == 0){
-        // notifyErrorFxn("You have not uploaded Image");
-        dispatch(updateProfile(state, id, '', navigate, setLoading, imageUrl));
-      }else{
-        dispatch(uploadProfileImage(state, selectedFile.selectedFile, id, navigate, setLoading));
-      }
-     
-    }
-   
   return (
     <>
-      <Helmet>
-        <title> Cooler | Settings </title>
-      </Helmet>
+    <Container maxWidth="xl">
 
-      <Container maxWidth="xl">
-      <CssBaseline/> 
-       <>
-       <form onSubmit={settingsUpdate}>
-        <Grid container spacing={2} justify="center" style={{marginTop:"2rem", marginBottom:"2rem"}}>
+    <Grid item xs={12} sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography variant="h4" component="p">
+              My Profile
+              </Typography>
+            </Box>
+            <br/> <br/> <br/>
+          </Grid>
+   
+
+     <Grid container spacing={2}>
+         <Grid container item xs={12} spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
+            Update Password
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder="password"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {title}
+            onChange = {(e)=>{setTitle(e.target.value)}}
+            /><br/><br/><br/>
+             <Divider variant="fullWidth"/>
+            <br/><br/>
+            <Typography variant="p" component="p">
+            Company Size
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder="Enter New Company Size"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {genre}
+            onChange = {(e)=>{setGenre(e.target.value)}}
+            />
+          </Grid>
+          <Grid item xs={6}>
+          <Typography variant="p" component="p">
+            Confirm Password
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder=" confirm password"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {title}
+            onChange = {(e)=>{setTitle(e.target.value)}}
+            
+            />
+            
+            <br/><br/><br/>
+
+            <Divider  variant="fullWidth" />
+          </Grid>
+        </Grid>
+
        
-        <Grid item xs={6}>
-        {/* <center>
-        <Typography variant="h4">
-         <b>SETTINGS</b>
-        </Typography>
-        </center>
-        <br/> */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <CardMedia
-            style={{ border: '0.2px solid black', backgroundColor: '#fff', width: '240px' }}
-            component="img"
-            height="140"
-            width="540"
-            image={file ? file : state.imageUrl !== "" ? state.imageUrl : DEFAULTIMG}
-            alt="IMG"
-        />
-        </div>
-          <center>
-          <Button component="label" variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: '#348AED', marginTop: '15px' }}>
-            <b>UPLOAD</b>
-            <input
+        {/*<Grid container item xs={12} spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
+            Release Date
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder="Enter Release Date"
+            variant="outlined"
+            type="date"
+            multiline
+            maxRows={4}
+            value= {releaseDate}
+            onChange = {(e)=>{setReleaseDate(e.target.value)}}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
+            Film Description (max 450 characters)
+            </Typography>
+             <TextField
+             placeholder="Enter Desciption"
+                multiline
+                rows={4}
+                style={{ width: '100%', padding: '8px'}}
+                value= {description}
+                onChange = {(e)=>{setDescription(e.target.value)}}
+                />
+          </Grid>
+        </Grid>*/}
+        {/*<Grid container item xs={12} spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
+            Director
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder="Enter Director"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {director}
+            onChange = {(e)=>{setDirector(e.target.value)}}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
+            Trivia Fact (max 160 characters)
+            </Typography>
+             <TextField
+             placeholder="...."
+                multiline
+                rows={4}
+                style={{ width: '100%', padding: '8px'}}
+                value= {trivia}
+                onChange = {(e)=>{setTrivia(e.target.value)}}
+                />
+          </Grid>
+        </Grid>*/}
+        {/* upload section */}
+        
+        <Grid container item xs={12} spacing={2}>
+      <Grid item xs={12} md={8} lg={6}>
+      <br/>
+      <Divider variant="fullWidth"  /> 
+      <br/><br/>
+
+      <Typography variant="p" component="p">
+      Company Logo 
+       </Typography>
+      <Paper
+        sx={{
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          height: 200,
+          border: '1px solid grey'
+        }}
+      >
+        <center>
+        <Typography
+            color="textPrimary"
+            variant="h3"
+            component="p"
+          >
+          <Button component="label" style={{backgroundColor: 'white' }}>
+         <img src={UPLOADIMG} width='120px' />
+         <input
             type="file"
             style={{ display: 'none' }}
             onChange={handleselectedFile}
             />
-          </Button>
-          </center>
-
-              <br/>      
+            </Button>
+      </Typography>
+      <Typography
+            color="textPrimary"
+            variant="p"
+            component="p"
+          >
+        Browse files to upload
+      </Typography>
+      </center>
+      </Paper>
+      <p>{selectedFile?.selectedFileName}</p>
     </Grid>
-       
-
+    <Grid item xs={12} md={8} lg={6}>
+      <br/>
+     <Divider variant="fullWidth" />
+   {/*<Typography variant="p" component="p">
+      Video (.mp4)
+       </Typography>
+      <Paper
+        sx={{
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          height: 200,
+          border: '1px solid grey'
+        }}
+      >
+        <center>
+        <Typography
+            color="textPrimary"
+            variant="h3"
+            component="p"
+          >
+          <Button component="label" style={{backgroundColor: 'white' }}>
+         <img src={UPLOADIMG} width='120px' />
+         <input
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleselectedFile2}
+            />
+            </Button>
+      </Typography>
+      <Typography
+            color="textPrimary"
+            variant="p"
+            component="p"
+          >
+        Browse your movie to upload
+      </Typography>
+      </center>
+      </Paper>
+      <p>{selectedFile2?.selectedFileName2}</p>*/}
+    </Grid>
+        </Grid>
       </Grid>
-
-      <Grid item xs container direction="column" spacing={6} style={{paddingLeft: '100px', paddingRight: '100px'}}>
-                <Grid item xs>
-                  <div style={{display: 'flex', marginBottom: '-20px'}}>
-                  <h2 style={{ fontSize: '19px', width: '40%'}}><b>PAYMENT LINK: </b></h2>
-                    &nbsp; &nbsp;
-                    <TextField id="outlined-basic" fullWidth label="Enter Payment Link" variant="outlined" 
-                    name="paymentLink"
-                    value={state.paymentLink}
-                    onChange={handleChange}
-                    />
-                  </div>
-                  <br/><br/>
-                  <div style={{display: 'flex', marginBottom: '-20px'}}>
-                  <h2 style={{ fontSize: '19px', width: '40%'}}><b>PASSWORD: </b></h2>
-                    &nbsp; &nbsp;
-                    <TextField id="outlined-basic" fullWidth label="Enter Password" variant="outlined" 
-                    name="password"
-                    value={state.password}
-                    onChange={handleChange}
-                    />
-                  </div>
-                  <br/>
-
-                </Grid>
-                <div style={{border: '1px solid grey', width: '100%'}}></div>
-                <br/>
-                 <center>
-                <Button type="submit" disabled={loading} variant="contained" style={{minHeight: '45px', maxWidth: '100px', backgroundColor: '#348AED'}}>
-                    <b>{loading ? "Loading..." : "UPDATE"}</b> 
-                </Button>
-                 </center>
-              </Grid>
-            </form>
-    </>
-      </Container>
+      <br/><br/><br/><br/>
+  <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <Button  onClick={() => { uploadMovie(groupData,selectedFile2.selectedFile2,selectedFile.selectedFile,navigate)}} variant="contained" 
+  style={{ backgroundColor: "#000000"/*"#F97D0B"*/, paddingTop: '10px', paddingBottom: '10px', 
+  paddingRight: '30px', paddingLeft: '30px'}}
+>
+    SAVE CHANGES
+  </Button>
+</div>
+</Container>
     </>
   );
 }
+
+export default SettingsPage;
