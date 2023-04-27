@@ -20,6 +20,9 @@ import InboxPage from './pages/InboxPage';
 import SettingsPage from './pages/SettingsPage';
 import UserListPage from './pages/UserListPage';
 import IncubatorVideoPage from './pages/IncubatorVideosPage';
+import OperationsVideoPage from './pages/OperationsVideosPage';
+import ViewIncubatorPage from './pages/ViewIncubatorPage';
+
 //import PublicCoolerPage from './pages/PublicCoolerPage';
 //import PrivateCoolerPage from './pages/PrivateCoolerPage';
 //import PublicCoolerJoin from './pages/PublicCoolerJoin';
@@ -44,6 +47,10 @@ export default function Router() {
         { path: 'home', element:<UserListPage/>/*<HomePage1 />*/ },
         { path: 'feed', element: <FeedPage /> },
         { path: 'incu-videos', element: <IncubatorVideoPage /> },
+        { path: 'incu-videos-tech', element: <OperationsVideoPage /> },
+        { path: 'incu-videos-ops', element: <OperationsVideoPage /> },
+        { path: 'incu-videos-safety', element: <OperationsVideoPage /> },
+        { path: 'view-incubator', element: <ViewIncubatorPage /> },
         { path: 'video', element: <VideoPage /> },
         { path: 'video-details', element: <VideoDetailsPage /> },
         { path: 'docs', element: <DocsPage /> },

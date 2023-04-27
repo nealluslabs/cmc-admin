@@ -64,7 +64,7 @@ const loginPageData = {
        <LoginForm />
        
 
-      Dont Have an account? <Link style={{color:"lightblue"}} to ={'/regTest'}>Register Here.</Link> 
+      {/*Dont Have an account? <Link style={{color:"lightblue"}} to ={'/regTest'}>Register Here.</Link> */}
       </div>
      
     </div>
@@ -80,7 +80,7 @@ const loginPageData = {
         <div className ="welcome-barcode">
       <img src={barcode} alt="White Barcode"/>
 
-        <h1> Welcome to CMC Network</h1>
+        <h1> Welcome to CMC ADMIN</h1>
         </div>
 
       <div className = "intro-desc">

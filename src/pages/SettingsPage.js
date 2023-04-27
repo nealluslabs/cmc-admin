@@ -81,20 +81,21 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
     <Grid item xs={12} sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography variant="h4" component="p">
-              My Profile
+              UPLOAD DOCUMENT
               </Typography>
             </Box>
             <br/> <br/> <br/>
+            <br/> 
           </Grid>
    
 
      <Grid container spacing={2}>
          <Grid container item xs={12} spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <Typography variant="p" component="p">
-            Update Password
+            SECTION
             </Typography>
-            <TextField
+           {/* <TextField
             fullWidth
             placeholder="password"
             variant="outlined"
@@ -102,29 +103,19 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             maxRows={4}
             value= {title}
             onChange = {(e)=>{setTitle(e.target.value)}}
-            /><br/><br/><br/>
-             <Divider variant="fullWidth"/>
+            />*/}
             <br/><br/>
-            <Typography variant="p" component="p">
-            Company Size
-            </Typography>
-            <TextField
-            fullWidth
-            placeholder="Enter New Company Size"
-            variant="outlined"
-            multiline
-            maxRows={4}
-            value= {genre}
-            onChange = {(e)=>{setGenre(e.target.value)}}
-            />
+            
+            <br/><br/>
+           
           </Grid>
-          <Grid item xs={6}>
-          <Typography variant="p" component="p">
+          <Grid item xs={9}>
+          {/*<Typography variant="p" component="p">
             Confirm Password
-            </Typography>
+            </Typography>*/}
             <TextField
             fullWidth
-            placeholder=" confirm password"
+            placeholder=" section header"
             variant="outlined"
             multiline
             maxRows={4}
@@ -135,17 +126,60 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             
             <br/><br/><br/>
 
-            <Divider  variant="fullWidth" />
+         
+            
+          </Grid>
+        </Grid>
+
+
+        <Grid container item xs={12} spacing={2}>
+          <Grid item xs={3}>
+            <Typography variant="p" component="p">
+            SUB-SECTION
+            </Typography>
+           {/* <TextField
+            fullWidth
+            placeholder="password"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {title}
+            onChange = {(e)=>{setTitle(e.target.value)}}
+            />*/}
+            <br/><br/>
+            
+            <br/><br/>
+           
+          </Grid>
+          <Grid item xs={9}>
+          {/*<Typography variant="p" component="p">
+            Confirm Password
+            </Typography>*/}
+            <TextField
+            fullWidth
+            placeholder=" sub-section header"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {title}
+            onChange = {(e)=>{setTitle(e.target.value)}}
+            
+            />
+            
+            <br/><br/><br/>
+
+         
+            
           </Grid>
         </Grid>
 
        
-        {/*<Grid container item xs={12} spacing={2}>
-          <Grid item xs={6}>
+        {<Grid container item xs={12} spacing={2}>
+          <Grid item xs={3}>
             <Typography variant="p" component="p">
-            Release Date
+            DETAILS
             </Typography>
-            <TextField
+           {/* <TextField
             fullWidth
             placeholder="Enter Release Date"
             variant="outlined"
@@ -154,22 +188,22 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             maxRows={4}
             value= {releaseDate}
             onChange = {(e)=>{setReleaseDate(e.target.value)}}
-            />
+            />*/}
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="p" component="p">
+          <Grid item xs={9}>
+            {/*<Typography variant="p" component="p">
             Film Description (max 450 characters)
-            </Typography>
+            </Typography>*/}
              <TextField
              placeholder="Enter Desciption"
                 multiline
-                rows={4}
+                rows={10}
                 style={{ width: '100%', padding: '8px'}}
                 value= {description}
                 onChange = {(e)=>{setDescription(e.target.value)}}
                 />
           </Grid>
-        </Grid>*/}
+        </Grid>}
         {/*<Grid container item xs={12} spacing={2}>
           <Grid item xs={6}>
             <Typography variant="p" component="p">
@@ -208,7 +242,7 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
       <br/><br/>
 
       <Typography variant="p" component="p">
-      Company Logo 
+      COVER 
        </Typography>
       <Paper
         sx={{
@@ -248,8 +282,9 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
     <Grid item xs={12} md={8} lg={6}>
       <br/>
      <Divider variant="fullWidth" />
-   {/*<Typography variant="p" component="p">
-      Video (.mp4)
+     <br/><br/>
+   <Typography variant="p" component="p">
+      DOCUMENT
        </Typography>
       <Paper
         sx={{
@@ -280,11 +315,11 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             variant="p"
             component="p"
           >
-        Browse your movie to upload
+        Browse your document to upload
       </Typography>
       </center>
       </Paper>
-      <p>{selectedFile2?.selectedFileName2}</p>*/}
+      <p>{selectedFile2?.selectedFileName2}</p>
     </Grid>
         </Grid>
       </Grid>
@@ -294,7 +329,7 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
   style={{ backgroundColor: "#000000"/*"#F97D0B"*/, paddingTop: '10px', paddingBottom: '10px', 
   paddingRight: '30px', paddingLeft: '30px'}}
 >
-    SAVE CHANGES
+    SUBMIT
   </Button>
 </div>
 </Container>

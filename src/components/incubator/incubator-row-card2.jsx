@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-function IncubatorRowCard ({ id, title, val, img}) {
+function IncubatorRowCard2 ({ id, title, val, img}) {
     const [isOpen, setIsOpen] = useState(false);
     const classes = useStyles();
     const [uid, setUid] = useState(null)
@@ -109,7 +109,7 @@ function IncubatorRowCard ({ id, title, val, img}) {
             <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}
               onClick={() => {
                 const groupData = {id, title, val, img}
-                navigate('/dashboard/incu-videos-ops', { state: { groupData } })
+                navigate('/dashboard/view-incubator', { state: { groupData } })
               }}>
                 {"View"}
             </Button>
@@ -132,4 +132,4 @@ function IncubatorRowCard ({ id, title, val, img}) {
       );
 }
 
-export default IncubatorRowCard
+export default IncubatorRowCard2
