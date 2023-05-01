@@ -74,12 +74,18 @@ function VideosRowCard ({ videoId, title, desc, tags, isDetail}) {
             margin: 'auto',
             // maxWidth: 500,
             // border: '1px solid black',
+            borderTop:'1px solid lightgray',
             flexGrow: 1,
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
           }}
         >
           <Grid container spacing={2}>
+          <Grid item justifyContent="center">
+          <h2 style={{ fontSize: '19px'}}><b>{title.toUpperCase()}</b></h2>
+          </Grid>
+         
+          <Grid item container spacing={2}>
             <Grid item>
             {/* <Avatar alt="Profile Pic" src={EmptyAvatar} style={{ width: '120px', height: '120px'}} /> */}
               <ButtonBase sx={{ width: 128, height: 128 }}>
@@ -111,15 +117,7 @@ function VideosRowCard ({ videoId, title, desc, tags, isDetail}) {
               <Box display="flex" alignItems="center" className={classes.box}>
               <Grid item xs={6} sm container spacing={1} justifyContent="flex-end" alignItems="center">
               <Grid item justifyContent="flex-end" alignItems="center" sx={{mt: 5}}>
-              {/* {!isMember ?
-              <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: '#348AED', }}
-              onClick={() => {
-                const groupData = {groupId, name, fee, feeInNum, accountBal, count, img, startDate}
-                navigate('/dashboard/join-cooler', { state: { groupData } })
-              }}>
-                {"Join"}
-            </Button>
-            : */}
+             
             <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}
               onClick={() => {
                 const groupData = {videoId, title, desc, tags}
@@ -138,6 +136,7 @@ function VideosRowCard ({ videoId, title, desc, tags, isDetail}) {
               </Grid>
             </Grid>
           </Grid>
+        </Grid>
         </Paper>
         <br/>
 

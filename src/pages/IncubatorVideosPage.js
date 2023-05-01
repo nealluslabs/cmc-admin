@@ -28,13 +28,14 @@ const data = [
 
 
 const allIncubatorVideos = data?.length ? (
-    data.map(dt => {
+    data.map((dt,i) => {
     return (
       <IncubatorRowCard 
       id={dt.id}
       title={dt.title} 
       val={dt.val}
       img={dt.imageUrl}
+      position={i+1===data.length?"last":"not last"}
       />
     )
   })

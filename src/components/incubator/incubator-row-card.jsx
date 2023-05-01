@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-function IncubatorRowCard ({ id, title, val, img}) {
+function IncubatorRowCard ({ id, title, val, img,position}) {
     const [isOpen, setIsOpen] = useState(false);
     const classes = useStyles();
     const [uid, setUid] = useState(null)
@@ -77,12 +77,19 @@ function IncubatorRowCard ({ id, title, val, img}) {
             margin: 'auto',
             // maxWidth: 500,
             border: '0px solid black',
+            borderBottom:position !=='last'?'1px solid lightgray':'none',
             flexGrow: 1,
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
           }}
         >
           <Grid container spacing={2}>
+           
+          <Grid item >
+          <h2 style={{ fontSize: '19px', display: 'flex',flexDirection:"row",justifyContent:"center",alignItems:"center"}}><b>{title.toUpperCase()}</b></h2>
+          </Grid>
+
+          <Grid item container spacing={2}>
             <Grid item>
             {/* <Avatar alt="Profile Pic" src={EmptyAvatar} style={{ width: '120px', height: '120px'}} /> */}
               <ButtonBase sx={{ width: 128, height: 128 }}>
@@ -95,7 +102,7 @@ function IncubatorRowCard ({ id, title, val, img}) {
                 <Grid item xs container direction="column" spacing={0}>
                 <Grid item xs>
                     <div style={{display: 'flex', flexDirection: 'column', border: '0px solid red', marginBottom: '-20px'}}>
-                    <h2 style={{ fontSize: '19px', margin: '0' }}><b>{title}</b></h2>
+                   { <h2 style={{ fontSize: '19px', margin: '0',opacity:'0' }}><b>{title}</b></h2>}
                     <p style={{ fontSize: '17px', margin: '0',  }}>{val}</p>
                     </div>
                 </Grid>
@@ -123,6 +130,7 @@ function IncubatorRowCard ({ id, title, val, img}) {
 
               </Grid>
             </Grid>
+          </Grid>
           </Grid>
         </Paper>
         <br/>

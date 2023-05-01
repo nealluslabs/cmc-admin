@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-function IncubatorRowCard2 ({ id, title, val, img}) {
+function IncubatorRowCard2 ({ id, title, val, img,position}) {
     const [isOpen, setIsOpen] = useState(false);
     const classes = useStyles();
     const [uid, setUid] = useState(null)
@@ -77,6 +77,7 @@ function IncubatorRowCard2 ({ id, title, val, img}) {
             margin: 'auto',
             // maxWidth: 500,
             border: '0px solid black',
+            borderBottom:position !=='last'?'1px solid lightgray':'none',
             flexGrow: 1,
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
