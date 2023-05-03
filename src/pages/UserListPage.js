@@ -90,9 +90,11 @@ export default function CJobs() {
       
         
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      
+       <h1 style={{position:"relative",fontWeight:"bold",left:"0px",marginBottom:"40px",fontSize:"30px"}}>DASHBOARD</h1>
       <Grid container spacing={2}>
+        
     <Grid item xs={12} md={8} lg={6}>
+     
       <Paper
         sx={{
           p: 2,
@@ -103,6 +105,7 @@ export default function CJobs() {
           borderRadius: '15px'
         }}
       >
+        
        <div>
        <Typography color="textPrimary" variant="p" component="p">
         <b>NEW CONTRACTORS</b>

@@ -75,6 +75,7 @@ function IncubatorRowCard ({ id, title, val, img,position}) {
             pt: 2,
             pb: 2,
             margin: 'auto',
+            marginLeft:'30px',
             // maxWidth: 500,
             border: '0px solid black',
             borderBottom:position !=='last'?'1px solid lightgray':'none',

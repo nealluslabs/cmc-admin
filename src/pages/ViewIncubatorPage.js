@@ -48,6 +48,7 @@ const data = [
       </Helmet>
 
       <Container maxWidth="xl">
+      <h1 style={{position:"relative",fontWeight:"bold",left:"0px",marginBottom:"40px",fontSize:"30px"}}>ORGANIZATION</h1>
       <CssBaseline/> 
        <>
         <Grid container spacing={2} justify="center" style={{marginLeft:"-20px",width:"99%",marginTop:"2rem",padding:"50px", marginBottom:"2rem",boxShadow: "-5px 5px 8px 3px rgba(0,0,0,0.24)"}}>
@@ -71,7 +72,9 @@ const data = [
      
 
       <Grid item xs container direction="column" spacing={6} style={{paddingLeft: '100px', paddingRight: '300px',paddingTop:"30px",paddingBottom:"30px",boxShadow: "-5px 5px 8px 3px rgba(0,0,0,0.24)"}}>
-      <h2><b>HR</b></h2>
+      <h2><b>General Information</b></h2>
+      <br/>
+
           <p style={{color: 'grey'}}>Lorem ipsum dolor sit amet consectetur. Eget ac risus ipsum maecenas cursus adipiscing eros. Mi viverra semper gravida pretium elementum. Pellentesque lacus ultrices luctus sit semper. Elementum tortor donec adipiscing tortor ut mollis quis. Molestie ipsum libero euismod ut eu quis.</p>
                 <br/><br/>
                {/*data.map((dt => {

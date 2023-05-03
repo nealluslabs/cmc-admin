@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fCurrency } from '../utils/formatNumber';
 import IncubatorRowCard from 'src/components/incubator/incubator-row-card';
 import IncubatorRowCard2 from 'src/components/incubator/incubator-row-card2';
-
+import CustomSearchBar from 'src/components/global/CustomSearchBar';
 
 
 export default function OperationsVideoPage() {
@@ -55,6 +55,12 @@ const allIncubatorVideos = data?.length ? (
       </Helmet>
       <Container maxWidth="xl">
       <Paper sx={{boxShadow: "-5px 5px 8px 3px rgba(0,0,0,0.24)"}}>
+      <h1 style={{position:"relative",fontWeight:"bold",marginLeft:"30px",marginBottom:"20px",paddingTop:"30px",fontSize:"30px"}}>Videos - Organization</h1>
+
+        {/*I USE THE DIV TO REGULATE STYLE AND POSITIONING OF THE  SEARCH BAR */}
+        <div style={{width:"50%",marginBottom:"40px",marginLeft:"30px"}}>
+        <CustomSearchBar/> 
+       </div>
       {/* <SearchBox style={{ width: '100%' }} /> */}
       <br/>
       {/* <Grid  container direction="row" justifyContent="flex-end" alignItems="flex-end">
