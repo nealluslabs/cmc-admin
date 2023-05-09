@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect,useRef} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTheme } from '@mui/material/styles';
 // import { Grid, Container, Typography, Paper, Button } from '@mui/material';
@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DEFAULTIMG from '../assets/images/video-player.png';
 import ListRowCard from 'src/components/incubator/list-card';
+
+import {fetchVideoSubsection} from 'src/redux/actions/group.action';
 
 
 
@@ -34,12 +36,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ViewIncubatorPage() {
- const navigate = useNavigate() 
-const data = [
+   const dispatch = useDispatch()
+   const location = useLocation()
+   const { allSectionVideos,requestedSection } = useSelector((state) => state.group);
+  const renderCount = useRef(0)
+  
+   const dummyData = [
     {id: 1, title: "General (16 mins)", desc: "Lorem ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
     {id: 2, title: "Public (11 mins)", desc: "Tetsla ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
     {id: 3, title: "Future (39 mins)", desc: "Lorem ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
 ];
+
+
+   const [subSection,setSubSection] = useState(allSectionVideos)
+   const [pastRequest,setPastRequest] = useState('')
+   const [data,setData] = useState(allSectionVideos?allSectionVideos:dummyData)
+  
+   useEffect(()=>{
+   renderCount.current = allSectionVideos
+   },[])
+
+
+
+
+  useEffect(()=>{
+    console.log("renderCount.current",renderCount.current)
+    console.log("the latest videos are:",allSectionVideos)
+   
+  
+    //dispatch(fetchVideoSubsection(location.state.title))
+     setData(allSectionVideos)
+     console.log("all the videos from the requested section are as follows:",allSectionVideos) 
+  
+
+     
+  },[requestedSection])
+  
+
 
   return (
     <>
@@ -48,10 +81,10 @@ const data = [
       </Helmet>
 
       <Container maxWidth="xl">
-      <h1 style={{position:"relative",fontWeight:"bold",left:"0px",marginBottom:"40px",fontSize:"30px"}}>ORGANIZATION</h1>
+      <h1 style={{position:"relative",left:"60px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>ORGANIZATION</h1>
       <CssBaseline/> 
        <>
-        <Grid container spacing={2} justify="center" style={{marginLeft:"-20px",width:"99%",marginTop:"2rem",padding:"50px", marginBottom:"2rem",boxShadow: "-5px 5px 8px 3px rgba(0,0,0,0.24)"}}>
+        <Grid container spacing={2} justify="center" style={{marginTop:"2rem", marginBottom:"2rem"}}>
        
         <Grid item xs={6}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -65,50 +98,29 @@ const data = [
         />
         </div>  
     </Grid>
-  
+       
+
       </Grid>
 
-      <br/><br/> <br/><br/>
-     
-
-      <Grid item xs container direction="column" spacing={6} style={{paddingLeft: '100px', paddingRight: '300px',paddingTop:"30px",paddingBottom:"30px",boxShadow: "-5px 5px 8px 3px rgba(0,0,0,0.24)"}}>
-      <h2><b>General Information</b></h2>
-      <br/>
-
+      <Grid item xs container direction="column" spacing={6} style={{paddingLeft: '100px', paddingRight: '100px'}}>
+      <h2><b>{data.length? data[0].subSection.toUpperCase():''}</b></h2>
           <p style={{color: 'grey'}}>Lorem ipsum dolor sit amet consectetur. Eget ac risus ipsum maecenas cursus adipiscing eros. Mi viverra semper gravida pretium elementum. Pellentesque lacus ultrices luctus sit semper. Elementum tortor donec adipiscing tortor ut mollis quis. Molestie ipsum libero euismod ut eu quis.</p>
                 <br/><br/>
-               {/*data.map((dt => {
+               {data.length?
+               data.map(((dt,i) => {
                 return (
-                    <ListRowCard data={dt}/>
+
+                    <ListRowCard data={dt} index={i}/>
                 )
-               }))*/}
-
-    <p style={{color: 'grey'}}>Lorem ipsum dolor sit amet consectetur. Eget ac risus ipsum maecenas 
- cursus adipiscing eros. Mi viverra semper gravida pretium elementum.
-  Pellentesque lacus ultrices luctus sit semper. Elementum 
-  tortor donec adipiscing tortor ut mollis quis. Molestie ipsum 
-  libero euismod ut eu quis.
-  cursus adipiscing eros. Mi viverra semper gravida pretium elementum.
-  Pellentesque lacus ultrices luctus sit semper. Elementum 
-  tortor donec adipiscing tortor ut mollis quis. Molestie ipsum 
-  libero euismod ut eu quis.
-  cursus adipiscing eros. Mi viverra semper gravida pretium elementum.
-  Pellentesque lacus ultrices luctus sit semper. Elementum 
-  tortor donec adipiscing tortor ut mollis quis. Molestie ipsum 
-  libero euismod ut eu quis.
-   
-  </p>
- </Grid>
-
- <br/><br/><br/><br/>
-  <div style={{ display: 'flex', justifyContent: 'center' }}>
-  <Button  onClick={() => { navigate('/dashboard/settings')}} variant="contained" 
-  style={{ backgroundColor: "#000000"/*"#F97D0B"*/, paddingTop: '10px', paddingBottom: '10px', 
-  paddingRight: '30px', paddingLeft: '30px'}}
->
-    EDIT
-  </Button>
-</div>
+               })):
+                  
+                 <center>
+                  <br/> <br/>
+                  No videos available for this sub section.
+                  </center>
+                
+                  }
+              </Grid>
     </>
       </Container>
     </>

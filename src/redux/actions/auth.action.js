@@ -1,5 +1,5 @@
 import { db, fb, auth, storage } from '../../config/firebase';
-import { clearUser, loginFailed, loginSuccess, logoutFxn, signupPending, signupFailed, storeUserData } from '../reducers/auth.slice';
+import { clearUser, loginFailed, loginSuccess, logoutFxn, signupPending, signupFailed, storeUserData,storeProfileImages } from '../reducers/auth.slice';
 import { v4 as uuidv4 } from 'uuid';
 import { notifyErrorFxn, notifySuccessFxn } from 'src/utils/toast-fxn';
 import { clearGroup } from '../reducers/group.slice';
@@ -53,8 +53,8 @@ export const signup = (user,navigate) => async (dispatch) => {
       certified:user.certified,
       state:user.state,
       industry:user.industry,
-      city:user.city
-
+      city:user.city,
+       profileImage:'src/assets/images/rec.png'
     })
     
 
@@ -119,6 +119,45 @@ export const fetchUserData = (id, type, navigate) => async (dispatch) => {
   console.log("Error getting document:", error);
 });
 return user;
+};
+
+
+export const getUserProfilePic = (idArray) => async (dispatch) => {
+  //var user = db.collection("users").doc(id);
+   console.log("idArray at this given moment is:",idArray)
+const watchListItem =  db.collection('users').where('uid', 'in', idArray);
+  
+  watchListItem.get().then((snapshot) => {
+    const imageLinks = snapshot.docs.map((doc) => (doc.data().profileImage));
+    const identifier = snapshot.docs.map((doc) => (doc.data().uid));
+    const profileImages = []
+    
+  //push the profile image where the document in watching matches the id in idArray
+    idArray.forEach((item)=>{
+      
+      profileImages.push(imageLinks[identifier.indexOf(item)])
+
+    })
+
+
+ 
+    if (profileImages.length){
+     console.log(" 145 auth action- the submitted images array is",profileImages)
+  dispatch(storeProfileImages(profileImages));  
+ 
+      
+  } else {
+     
+      //notifyErrorFxn("Unauthorized❌")
+      console.log("No users imagse!");
+  }
+ }
+ 
+  ) 
+  .catch((error) => {
+  console.log("Error getting document:", error);
+});
+
 };
 
 

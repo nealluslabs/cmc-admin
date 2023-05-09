@@ -2,10 +2,11 @@ import { Container,Grid, TextField, Typography, TextareaAutosize, Button, Paper,
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UPLOADIMG from '../assets/images/upload.png';
-import { fetchGroups, fetchMyGroups, uploadGroupImage} from 'src/redux/actions/group.action';
+import { fetchGroups, fetchMyGroups, uploadUserSettings} from 'src/redux/actions/group.action';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { notifyErrorFxn } from 'src/utils/toast-fxn';
+import users from 'src/_mock/user';
 
 function SettingsPage() {
   const navigate = useNavigate();
@@ -17,22 +18,25 @@ function SettingsPage() {
   const [selectedFile2, setSelectedFile2] = useState({selectedFile2: [], selectedFileName2: []});
   const dispatch = useDispatch();
 
-  const [title,setTitle] =useState('')
-  const [genre,setGenre] =useState('')
-  const [releaseDate,setReleaseDate] =useState('')
+  const [newPassword,setNewPassword] =useState('')
+  const [confirmPassword,setConfirmPassword] =useState('')
+  const [companySize,setCompanySize] =useState('')
+
+  const { user } = useSelector((state) => state.auth);
+  console.log("user details are:",user)
+
+  /*const [releaseDate,setReleaseDate] =useState('')
   const [director,setDirector] =useState('')
   const [cast,setCast] =useState([])
   const [description,setDescription] =useState('')
-  const [trivia,setTrivia] =useState('')
+  const [trivia,setTrivia] =useState('')*/
   
   const groupData = {
-    title,
-    genre,
-    releaseDate,
-    director,
-    cast,
-    description,
-    trivia
+    email:user.email,
+    password:user.password,
+    newPassword,
+    companySize,
+    uid:user.uid
   }
 
 
@@ -46,7 +50,7 @@ function SettingsPage() {
     setFile(URL.createObjectURL(event.target.files[0]));
     setFileSize(event.target.files[0].size)
 };
-  const handleselectedFile2 = event => {
+ /* const handleselectedFile2 = event => {
     console.log("these are the video deets!",event.target.files[0])
     setSelectedFile2({
         selectedFile2: event.target.files[0],
@@ -54,22 +58,22 @@ function SettingsPage() {
     });
     setFile2(URL.createObjectURL(event.target.files[0]));
     setFileSize2(event.target.files[0].size)
-};
+};*/
 
 
 
-const uploadMovie = (movieData,video,image,navigate) => {
-if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!cast.length ||!trivia.length || !description.length || file === undefined || file2 === undefined){
+const uploadMovie = (movieData = 0,image = 0,) => {
+if(!companySize.length && !newPassword.length &&  file === undefined ){
   console.log("THE EMPTY FIELDS ARE:",file)
-  notifyErrorFxn("Please make sure to fill in all fields")
+  notifyErrorFxn("Please fill in the field(s) you want to update!")
 }else{
- if( fileSize  > 10000000){
+ if( fileSize  > 300000){
   notifyErrorFxn("Image size too large! please upload a smaller picture.")
  }
- else if( fileSize2  > 20000000){
+ /*else if( fileSize2  > 20000000){
   notifyErrorFxn("Video size too large! please upload a smaller video.")
- }else{
-  dispatch(uploadGroupImage(movieData,video,image,navigate))
+ }*/else{
+  dispatch(uploadUserSettings(movieData,image))
  }
 }
 }
@@ -78,108 +82,76 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
     <>
     <Container maxWidth="xl">
 
+    <h1 style={{position:"relative",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>SETTINGS</h1>
+
     <Grid item xs={12} sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography variant="h4" component="p">
-              UPLOAD DOCUMENT
+              My Profile
               </Typography>
             </Box>
             <br/> <br/> <br/>
-            <br/> 
           </Grid>
    
 
      <Grid container spacing={2}>
          <Grid container item xs={12} spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={6}>
             <Typography variant="p" component="p">
-            SECTION
+            Update Password
             </Typography>
-           {/* <TextField
+            <TextField
             fullWidth
             placeholder="password"
             variant="outlined"
             multiline
             maxRows={4}
-            value= {title}
-            onChange = {(e)=>{setTitle(e.target.value)}}
-            />*/}
+            value= {newPassword}
+            onChange = {(e)=>{setNewPassword(e.target.value)}}
+            /><br/><br/><br/>
+             <Divider variant="fullWidth"/>
             <br/><br/>
-            
-            <br/><br/>
-           
-          </Grid>
-          <Grid item xs={9}>
-          {/*<Typography variant="p" component="p">
-            Confirm Password
-            </Typography>*/}
-            <TextField
-            fullWidth
-            placeholder=" section header"
-            variant="outlined"
-            multiline
-            maxRows={4}
-            value= {title}
-            onChange = {(e)=>{setTitle(e.target.value)}}
-            
-            />
-            
-            <br/><br/><br/>
-
-         
-            
-          </Grid>
-        </Grid>
-
-
-        <Grid container item xs={12} spacing={2}>
-          <Grid item xs={3}>
             <Typography variant="p" component="p">
-            SUB-SECTION
+            Company Size
             </Typography>
-           {/* <TextField
-            fullWidth
-            placeholder="password"
-            variant="outlined"
-            multiline
-            maxRows={4}
-            value= {title}
-            onChange = {(e)=>{setTitle(e.target.value)}}
-            />*/}
-            <br/><br/>
-            
-            <br/><br/>
-           
-          </Grid>
-          <Grid item xs={9}>
-          {/*<Typography variant="p" component="p">
-            Confirm Password
-            </Typography>*/}
             <TextField
             fullWidth
-            placeholder=" sub-section header"
+            placeholder="Enter New Company Size"
             variant="outlined"
             multiline
             maxRows={4}
-            value= {title}
-            onChange = {(e)=>{setTitle(e.target.value)}}
+            value= {companySize}
+            onChange = {(e)=>{setCompanySize(e.target.value)}}
+            />
+          </Grid>
+          <Grid item xs={6}>
+          <Typography variant="p" component="p">
+            Confirm Password
+            </Typography>
+            <TextField
+            fullWidth
+            placeholder=" confirm password"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            value= {confirmPassword}
+            onChange = {(e)=>{setConfirmPassword(e.target.value)}}
             
             />
             
             <br/><br/><br/>
 
-         
-            
+            <Divider  variant="fullWidth" />
           </Grid>
         </Grid>
 
        
-        {<Grid container item xs={12} spacing={2}>
-          <Grid item xs={3}>
+        {/*<Grid container item xs={12} spacing={2}>
+          <Grid item xs={6}>
             <Typography variant="p" component="p">
-            DETAILS
+            Release Date
             </Typography>
-           {/* <TextField
+            <TextField
             fullWidth
             placeholder="Enter Release Date"
             variant="outlined"
@@ -188,22 +160,22 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             maxRows={4}
             value= {releaseDate}
             onChange = {(e)=>{setReleaseDate(e.target.value)}}
-            />*/}
+            />
           </Grid>
-          <Grid item xs={9}>
-            {/*<Typography variant="p" component="p">
+          <Grid item xs={6}>
+            <Typography variant="p" component="p">
             Film Description (max 450 characters)
-            </Typography>*/}
+            </Typography>
              <TextField
              placeholder="Enter Desciption"
                 multiline
-                rows={10}
+                rows={4}
                 style={{ width: '100%', padding: '8px'}}
                 value= {description}
                 onChange = {(e)=>{setDescription(e.target.value)}}
                 />
           </Grid>
-        </Grid>}
+        </Grid>*/}
         {/*<Grid container item xs={12} spacing={2}>
           <Grid item xs={6}>
             <Typography variant="p" component="p">
@@ -242,7 +214,7 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
       <br/><br/>
 
       <Typography variant="p" component="p">
-      COVER 
+      Company Logo 
        </Typography>
       <Paper
         sx={{
@@ -282,9 +254,8 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
     <Grid item xs={12} md={8} lg={6}>
       <br/>
      <Divider variant="fullWidth" />
-     <br/><br/>
-   <Typography variant="p" component="p">
-      DOCUMENT
+   {/*<Typography variant="p" component="p">
+      Video (.mp4)
        </Typography>
       <Paper
         sx={{
@@ -315,21 +286,21 @@ if(!title.length || !genre.length ||!releaseDate.length ||!director.length ||!ca
             variant="p"
             component="p"
           >
-        Browse your document to upload
+        Browse your movie to upload
       </Typography>
       </center>
       </Paper>
-      <p>{selectedFile2?.selectedFileName2}</p>
+      <p>{selectedFile2?.selectedFileName2}</p>*/}
     </Grid>
         </Grid>
       </Grid>
       <br/><br/><br/><br/>
   <div style={{ display: 'flex', justifyContent: 'center' }}>
-  <Button  onClick={() => { uploadMovie(groupData,selectedFile2.selectedFile2,selectedFile.selectedFile,navigate)}} variant="contained" 
+  <Button  onClick={() => { uploadMovie(groupData,selectedFile.selectedFile,navigate)}} variant="contained" 
   style={{ backgroundColor: "#000000"/*"#F97D0B"*/, paddingTop: '10px', paddingBottom: '10px', 
   paddingRight: '30px', paddingLeft: '30px'}}
 >
-    SUBMIT
+    SAVE CHANGES
   </Button>
 </div>
 </Container>

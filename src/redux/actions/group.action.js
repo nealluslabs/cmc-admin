@@ -2,7 +2,7 @@ import { db, fb, auth, storage } from '../../config/firebase';
 import { clearUser, loginFailed, loginSuccess, logoutFxn, signupFailed, storeUserData } from '../reducers/auth.slice';
 import { v4 as uuidv4 } from 'uuid';
 import { notifyErrorFxn, notifySuccessFxn } from 'src/utils/toast-fxn';
-import { isItLoading, saveAllGroup, saveEmployeer, saveGroupMembers, saveMyGroup, savePrivateGroup, savePublicGroup } from '../reducers/group.slice';
+import { isItLoading, saveAllGroup ,saveEmployeer,saveCategories ,saveGroupMembers, saveMyGroup, savePrivateGroup, savePublicGroup, saveSectionVideos,saveCategoryVideos } from '../reducers/group.slice';
 
 
 export const createGroup = (groupData, user, file, navigate, setLoading, url) => async (dispatch) => {
@@ -55,10 +55,14 @@ export const createGroup = (groupData, user, file, navigate, setLoading, url) =>
 }
 
 
-export const uploadGroupImage = (groupData, file, user, navigate, setLoading) => async (dispatch) => {
+export const uploadUserSettings = (groupData = 0, file = 0, user = 0) => async (dispatch) => {
+ if(file && file.length !== 0){
+
+   /*LOGIC T0 RUN IF WE HAVE A PICTURE */
+
   const imageName = uuidv4() + '.' + file?.name?.split('.')?.pop();
   console.log('File Name: ', imageName);
-  const uploadTask = storage.ref(`group_images/${imageName}`).put(file);
+  const uploadTask = storage.ref(`profile_images/${imageName}`).put(file);
   uploadTask.on(
     "state_changed",
     snapshot => {
@@ -69,18 +73,132 @@ export const uploadGroupImage = (groupData, file, user, navigate, setLoading) =>
     },
     error => {
       console.log(error);
+      notifyErrorFxn("Error uploading image,please try again!")
     },
     () => {
       storage
-        .ref("group_images")
+        .ref("profile_images")
         .child(imageName)
         .getDownloadURL()
         .then(url => {
           console.log('Image URL: ', url);
-          dispatch(createGroup(groupData, user, file, navigate, setLoading, url));
+          //dispatch(createGroup(groupData, user, file, navigate, setLoading, url));
+ 
+  
+
+    if(groupData.newPassword){
+   //PASSWORD UPDATE LOGIC
+
+   fb.auth().signInWithEmailAndPassword(groupData.email, groupData.password)
+   .then((userCredential) => {
+     // Signed in
+     const user = fb.auth().currentUser;
+    
+     user.updatePassword(groupData.newPassword).then(() => {
+       // Update successful.
+       console.log("PASSWORD UPDATE WENT WELL")
+     }).catch((error) => {
+       // An error ocurred
+       console.log("PASSWORD UPDATE FAILED HORRIBLY!")
+     });
+
+    
+     db.collection('users')
+     .doc(groupData.uid)
+     .update({
+      companySize:groupData.companySize,
+      profileImage:url,
+      password:groupData.newPassword
+     }).then(()=>{
+        notifySuccessFxn("data updated successfully")
+     }).catch((error)=>{
+      notifyErrorFxn("Error updating data,please try again!")
+     })
+
+   }).catch(()=>{
+    notifyErrorFxn("Please try updating your password again...")
+   })
+
+        
+          }
+
+  
+     if(!groupData.newPassword){
+    db.collection('users')
+  .doc(groupData.uid)
+  .update({
+   companySize:groupData.companySize,
+   profileImage:url,
+   
+  }).then(()=>{
+     notifySuccessFxn("data updated successfully")
+  }).catch((error)=>{
+   notifyErrorFxn("Error updating data,please try again!")
+  })
+
+  }
         });
     }
   );
+
+} 
+
+if(file.length === 0 && !groupData.newPassword){
+   // WE HAVE NO IMAGE AND NO NEW PASSWORD
+   db.collection('users')
+   .doc(groupData.uid)
+   .update({
+    companySize:groupData.companySize
+   }).then(()=>{
+      notifySuccessFxn("data updated successfully")
+   }).catch((error)=>{
+    notifyErrorFxn("Error updating data,please try again!")
+   })
+
+}
+
+
+if(file.length === 0 && groupData.newPassword){
+  // WE HAVE NO IMAGE BUT A NEW PASSWORD
+  
+  //UPDATING THE PASSWORD
+  fb.auth().signInWithEmailAndPassword(groupData.email, groupData.password)
+  .then((userCredential) => {
+    // Signed in
+    const user = fb.auth().currentUser;
+
+    user.updatePassword(groupData.newPassword).then(() => {
+      // Update successful.
+      console.log("PASSWORD UPDATE WENT WELL")
+    }).catch((error) => {
+      // An error ocurred
+      console.log("PASSWORD UPDATE FAILED HORRIBLY!")
+    });
+   
+    //UPDATING USER INFORMATION
+  db.collection('users')
+  .doc(groupData.uid)
+  .update({
+   companySize:groupData.companySize,
+   password:groupData.newPassword
+  }).then(()=>{
+     notifySuccessFxn("data updated successfully")
+  }).catch((error)=>{
+   notifyErrorFxn("Error updating data,please try again!")
+  })
+  }).catch(()=>{
+   notifyErrorFxn("Please try updating your password again...")
+  })
+  
+ 
+
+}
+
+
+
+
+
+
 }
 
 export const fetchMyGroups = (coolers) => async (dispatch) => {
@@ -165,6 +283,54 @@ export const fetchGroups = (adminID) => async (dispatch) => {
  });
  };
 
+
+ export const fetchVideoSection = (chosenSection)=> async(dispatch) =>{
+
+  //dispatch(isItLoading(true));
+  db.collection("sections")
+  .where('category', '==', chosenSection)
+   .get()
+   .then((snapshot) => {
+     const allSectionVids = snapshot.docs.map((doc) => ({ ...doc.data() }));
+   if (allSectionVids.length > 0) {
+     //dispatch(isItLoading(false));
+     console.log("ALL sections FROM DATABASE(FOR THIS CATEGORY):", allSectionVids);
+     dispatch(saveCategoryVideos(allSectionVids));
+   } else {
+      // dispatch(isItLoading(false));
+      dispatch(saveCategoryVideos(allSectionVids));
+       console.log("No sections for this category!");
+   }
+ }).catch((error) => {
+   console.log("Error getting document:", error);
+   dispatch(isItLoading(false));
+ });
+ };
+
+ export const fetchVideoSubsection = (chosenSection)=> async(dispatch) =>{
+
+  //dispatch(isItLoading(true));
+  db.collection("courses")
+  .where('subSection', '==', chosenSection)
+   .get()
+   .then((snapshot) => {
+     const allSectionVids = snapshot.docs.map((doc) => ({ ...doc.data() }));
+   if (allSectionVids.length > 0) {
+     //dispatch(isItLoading(false));
+     console.log("FRESH FROM DATABASE:", allSectionVids);
+     dispatch(saveSectionVideos(allSectionVids));
+   } else {
+      // dispatch(isItLoading(false));
+      dispatch(saveSectionVideos(allSectionVids));
+       console.log("No groups!");
+   }
+ }).catch((error) => {
+   console.log("Error getting document:", error);
+   dispatch(isItLoading(false));
+ });
+ };
+
+ 
 
 export const fetchPublicGroup = () => async (dispatch) => {
  dispatch(isItLoading(true));
@@ -450,6 +616,31 @@ export const fetchGroupMembers = (groupMembers) => async (dispatch) => {
       dispatch(isItLoading(false));
     });
 };
+
+/*========== do group fetching of categories HERE ======================= */
+
+export const fetchAllCategories = () => async (dispatch) => {
+  var categories = db.collection("categories");
+  categories.get().then((snapshot) => {
+    const groupMembers = snapshot.docs.map((doc) => ({ ...doc.data() }));
+    console.log("ALL CATEGORIES ARE:",groupMembers)
+    if (groupMembers.length) {
+    dispatch(saveCategories(groupMembers));
+  } else {
+      console.log("No categories in database!");
+  }
+}).catch((error) => {
+  console.log("Error getting categories:", error);
+});
+//return user;
+};
+
+
+
+
+
+
+/*===============do fetching of categories ===================== */
 
 export const fetchEmployeer = (id) => async (dispatch) => {
   var user = db.collection("employers").doc(id);

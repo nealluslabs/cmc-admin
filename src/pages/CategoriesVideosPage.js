@@ -1,3 +1,4 @@
+
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import { useTheme } from '@mui/material/styles';
@@ -6,23 +7,21 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import HomeBox from '../components/home/home-box';
 import PublicCoolerRowCard from 'src/components/public-cooler/public-cooler-card';
-import { fetchGroups, fetchPublicGroup } from 'src/redux/actions/group.action';
+import { fetchAllCategories } from 'src/redux/actions/group.action';
 import { useEffect,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fCurrency } from '../utils/formatNumber';
 
-import IncubatorRowCard from 'src/components/incubator/incubator-row-card';
+import CategoriesRowCard from 'src/components/categories/categories-row-card';
 import CustomSearchBar from 'src/components/global/CustomSearchBar';
 
 
 
-export default function IncubatorVideoPage() {
+export default function CategoriesVideoPage() {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-
-const { categoryVideos } = useSelector((state) => state.group);
-   console.log("VIDEOS IN THIS SECTION ARE NOW:",categoryVideos)
+  const { allCategories } = useSelector((state) => state.group);
+   console.log("CATEGORIES FOR NOW ARE:",allCategories)
  
    const dummyData = [
     {id: 1, imageUrl: '', title: "Finance", body: "lorem ard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompani"},
@@ -34,24 +33,23 @@ const { categoryVideos } = useSelector((state) => state.group);
  
  
  
-   const [data,setData] = useState(categoryVideos?categoryVideos:dummyData)
+   const [data,setData] = useState(allCategories.length?allCategories:dummyData)
 
 
 
 
-/*useEffect(()=>{
-  dispatch(fetchCategories())
-},[])*/
+useEffect(()=>{
+  dispatch(fetchAllCategories())
 
-
-
+  setTimeout(()=>{setData(allCategories)},1300)
+},[])
 
 
 
 const allIncubatorVideos = data?.length ? (
     data.map(dt => {
     return (
-      <IncubatorRowCard 
+      <CategoriesRowCard 
       id={dt.id}
       title={dt.title} 
       body={dt.body}
@@ -62,7 +60,7 @@ const allIncubatorVideos = data?.length ? (
 ) : 
 <>
 <div className="container">
-      <center><p className="center">No videos in this section yet</p></center>
+      <center><p className="center">No Video Categories yet</p></center>
   </div>
 </>
 
@@ -79,7 +77,7 @@ const allIncubatorVideos = data?.length ? (
         <CustomSearchBar/>
         </div>
 
-      <h1 style={{position:"relative",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>{data&&data[0].category.toUpperCase()}</h1>
+      <h1 style={{position:"relative",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>VIDEOS</h1>
       {/* <SearchBox style={{ width: '100%' }} /> */}
       <br/>
       {/* <Grid  container direction="row" justifyContent="flex-end" alignItems="flex-end">

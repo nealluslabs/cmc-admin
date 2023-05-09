@@ -5,6 +5,7 @@ const initialState = {
        error: '',
        message: '',
       isLoading: false,
+      profileImages:[]
 };
 
 const loginSlice = createSlice({
@@ -33,6 +34,9 @@ const loginSlice = createSlice({
       storeUserData: (state, action) => {
         state.user = action.payload;
       },
+      storeProfileImages: (state, action) => {
+        state.profileImages = action.payload;
+      },
     clearUser: (state) => {
       return {
         ...initialState,
@@ -60,6 +64,7 @@ export const {
  signupPending,
  signupFailed,
  storeUserData,
+ storeProfileImages,
  clearUser,
  logoutFxn,
  logoutSuccess,

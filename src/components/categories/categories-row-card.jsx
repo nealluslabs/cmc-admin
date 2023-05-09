@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import RectangleIMG from '../../assets/images/incu.png';
 import { useNavigate } from 'react-router-dom';
 import { setRequestedSection } from 'src/redux/reducers/group.slice';
-import { fetchVideoSubsection } from 'src/redux/actions/group.action';
+import { fetchVideoSection } from 'src/redux/actions/group.action';
 
 
 const Img = styled('img')({
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-function IncubatorRowCard ({ id, title, body, img}) {
+function CategoriesRowCard ({ id, title, body, img}) {
     const [isOpen, setIsOpen] = useState(false);
     const [loading,setLoading] = useState(false);
     const classes = useStyles();
@@ -120,18 +120,16 @@ function IncubatorRowCard ({ id, title, body, img}) {
             <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}
               onClick={() => {
                 //const groupData = {id, title, body, img}
-                setLoading(true)
-                dispatch(setRequestedSection(title))
-               
-               dispatch(fetchVideoSubsection(title))
-                const makeRequest = async()=>{
+                  setLoading(true)
+                  dispatch(fetchVideoSection(title))
+                 const makeRequest = async()=>{
                   console.log("i have set the requested section as",title)
-                  dispatch(setRequestedSection(title))
-                  dispatch(fetchVideoSubsection(title))}
+                 
+                  dispatch(fetchVideoSection(title))}
                 //use a promise not setTimeout
-                makeRequest().then(()=>(setTimeout(()=>{navigate('/dashboard/view-incubator', { state: { title } })},1300)))
+                makeRequest().then(()=>(setTimeout(()=>{navigate('/dashboard/incubator-videos', { state: { title } })},1300)))
               }}>
-                {loading?"Loading...":"Edit"}
+                {loading?"Loading...":"View"}
             </Button>
               </Grid>
               </Grid>
@@ -153,4 +151,4 @@ function IncubatorRowCard ({ id, title, body, img}) {
       );
 }
 
-export default IncubatorRowCard
+export default CategoriesRowCard

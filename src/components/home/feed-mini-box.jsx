@@ -1,6 +1,8 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Avatar, Button, Divider, FormControlLabel, Grid, Paper, Typography,  } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { setInboxDetails } from 'src/redux/reducers/chat.slice';
+import {getUserProfilePic} from 'src/redux/actions/auth.action';
 import { Link } from 'react-router-dom';
 //import { fCurrency } from 'src/utils/formatNumber';
 import AvatarIcon from 'src/assets/images/rec.png';
@@ -52,24 +54,52 @@ export default function FeedMiniBox(feed) {
   const classes = useStyles();
    console.log("feed is :",feed)
 
- 
+   const dispatch = useDispatch();
 
-  const rowData = [
+   const rowData = [
     { img: '21-01-2023', title: '2B Socket Wrench', time: '4:00PM' },
     { img: '21-01-2023', title: 'Networking Event', time: '2:00PM' },
     { img: '21-01-2023', title: 'Manhattan Project ', time: '10:20AM'},
     { img: '21-01-2023', title: 'Window Sponsorship ', time: '4:30PM' },
     { img: '21-01-2023', title: 'Eft Equipment Building ', time: '8:00AM' },
 
-   /* feed?feed.feed.map((item)=>{
-      return( { img: '21-01-2023', title:item.title, time: '4:00PM' })
-    }):
-    { img: '21-01-2023', title: '2B Socket Wrench', time: '4:00PM' },
-    { img: '21-01-2023', title: 'Networking Event', time: '2:00PM' },
-    { img: '21-01-2023', title: 'Manhattan Project ', time: '10:20AM'},
-    { img: '21-01-2023', title: 'Window Sponsorship ', time: '4:30PM' },
-    { img: '21-01-2023', title: 'Eft Equipment Building ', time: '8:00AM' }*/
+
   ];
+
+  const [userData,setUserData] = useState(feed && feed.feed?feed.feed:rowData)
+  console.log("is there a feed going into this component",feed.feed)
+
+  const { profileImages } = useSelector((state) => state.auth);
+  const {candidates } = useSelector((state) => state.candidates);
+
+   const setInboxData = (data) => {
+    dispatch(setInboxDetails(data));   
+    // console.log("DATA:", data);
+  }
+
+  const userIdArray = []
+
+  useEffect(()=>{
+    if(feed && feed.feed){
+     userData.forEach((item)=>{
+       userIdArray.push(item.senderId)
+     })
+    }
+      
+  },[candidates])
+
+  useEffect(()=>{
+  
+    if(userIdArray.length>0){
+      console.log("the user id array",userIdArray)
+      dispatch(getUserProfilePic(userIdArray))
+     }
+    
+      
+  },[userIdArray,candidates])
+
+
+
 
   const imageData = [
     logo1,logo2,logo3,logo4,logo5,logo6,logo7,logo8
@@ -83,9 +113,14 @@ export default function FeedMiniBox(feed) {
       </Grid>
       <br/>
       <Grid container spacing={1} className={classes.container}>
-      {rowData.map((row,i) => (
-        <Grid item xs={12} key={row.title}>
-          <Row title={feed.feed?feed.feed[feed.feed.length-(i+1)].title:row.title} avatarSrc={imageData[imageData.length -(i+1)]} />
+     
+    {userData.length &&
+      
+      userData.map((row,i) => (
+        <Grid item xs={12} key={row.title} onClick={() => setInboxData(row.title)}>
+          
+          <Row title={row.title.slice(0,10)+"..."} avatarSrc={profileImages?profileImages[i]:AvatarIcon} time={rowData[i].time} />
+          {/*<Row title={feed.feed?feed.feed[feed.feed.length-(i+1)].title:row.title} avatarSrc={imageData[imageData.length -(i+1)]} />*/}
         </Grid>
       ))}
     </Grid>

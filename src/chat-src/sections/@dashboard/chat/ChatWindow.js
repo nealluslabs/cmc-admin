@@ -9,6 +9,15 @@ export default function ChatWindow() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { inboxDetails } = useSelector((state) => state.inbox);
+  console.log("inboxDetails are:",inboxDetails)
+
+  const randomMessage = () =>{
+    const messageArray = ['Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an ','unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.','life changing seminar at 5pm on tuesday, dont miss out !']
+ 
+   const randomSelector =  Math.floor(Math.random() * 3)
+ 
+    return  messageArray[randomSelector]
+  }
 
   return (
     <Stack sx={{ flexGrow: 1, minWidth: '1px' }}>
@@ -17,7 +26,7 @@ export default function ChatWindow() {
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
         <Stack sx={{ flexGrow: 1 }}>
           {/* <ChatMessageList conversation={conversation} /> */}
-          <center><h4>Message From: {inboxDetails?.coolerName}</h4></center>
+          <center><h4>{inboxDetails ? 'Message From:'+ inboxDetails:"No message selected"}</h4></center>
           <Divider />
           <Grid
           container
@@ -26,9 +35,18 @@ export default function ChatWindow() {
           alignItems="flex-start"
           sx={{pl: 4, pt: 5}}
         >
-          <p style={{fontSize: '20px', margin: '10px 0'}}>Admin: {inboxDetails?.coolerName}</p>
-          <p style={{fontSize: '20px', margin: '10px 0'}}>Networking Event: {'12/03/23'} {/*fCurrency(inboxDetails?.amount)*/}</p>
-          
+          {inboxDetails?
+          <p style={{fontSize: '20px', margin: '10px 0'}}>Title:<span style={{color:"red"}}>{' '}{inboxDetails}</span> </p>
+          :
+          <p style={{fontSize: '20px', margin: '10px 0'}}>Click a message to View </p>
+          }
+         
+         {inboxDetails &&
+           <>
+          <p style={{fontSize: '20px', margin: '10px 0'}}>Message Body: </p>
+          <p style={{fontSize: '20px', margin: '10px 0'}}>{randomMessage()} </p>
+          </>
+          }
         </Grid>
           
         </Stack>

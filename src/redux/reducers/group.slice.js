@@ -3,6 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
        myGroups: [], 
        allGroups: [], 
+       allCategories:[],
+       allSectionVideos:[],
+       categoryVideos:[],
+       requestedSection:null,
        publicGroups: [], 
        privateGroups: [],
        groupMembers: [], 
@@ -21,6 +25,19 @@ const groupSlice = createSlice({
     saveAllGroup: (state, action) => {
         state.allGroups = action.payload;
     },
+    setRequestedSection: (state, action) => {
+      state.requestedSection = action.payload;
+   },
+    saveSectionVideos: (state, action) => {
+      state.allSectionVideos = action.payload;
+  },
+
+saveCategoryVideos: (state, action) => {
+  state.categoryVideos = action.payload;
+},
+  saveCategories: (state, action) => {
+    state.allCategories = action.payload;
+},
     savePublicGroup: (state, action) => {
         state.publicGroups = action.payload;
     },
@@ -49,10 +66,14 @@ const { actions, reducer } = groupSlice;
 export const {
  saveMyGroup,
  saveAllGroup,
+ saveSectionVideos,
+ saveCategoryVideos,
  savePublicGroup,
+ saveCategories,
  savePrivateGroup,
  saveGroupMembers,
  saveEmployeer,
+ setRequestedSection,
  isItLoading,
  clearGroup
 } = actions;

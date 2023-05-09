@@ -31,7 +31,7 @@ import ViewIncubatorPage from './pages/ViewIncubatorPage';
 import Login from './pages/Login';
 import LoginUpdatedPage from './pages/LoginUpdatedPage/LoginUpdatedPage'
 import RegisterUpdatedPage from './pages/RegisterUpdatedPage/RegisterUpdatedPage'
-
+import CategoriesVideoPage from './pages/CategoriesVideosPage';
 
 export default function Router() {
   const routes = useRoutes([
@@ -46,7 +46,7 @@ export default function Router() {
         { element: <Navigate to="/login" />, index: true },
         { path: 'home', element:<UserListPage/>/*<HomePage1 />*/ },
         { path: 'feed', element: <FeedPage /> },
-        { path: 'incu-videos', element: <IncubatorVideoPage /> },
+        { path: 'incubator-videos', element: <IncubatorVideoPage /> },
         { path: 'incu-videos-tech', element: <OperationsVideoPage /> },
         { path: 'incu-videos-ops', element: <OperationsVideoPage /> },
         { path: 'incu-videos-safety', element: <OperationsVideoPage /> },
@@ -54,6 +54,7 @@ export default function Router() {
         { path: 'video', element: <VideoPage /> },
         { path: 'video-details', element: <VideoDetailsPage /> },
         { path: 'docs', element: <DocsPage /> },
+        { path: 'categories-videos', element: <CategoriesVideoPage /> },
        
         
         { path: 'chat', element: <InboxPage /> },

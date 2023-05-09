@@ -23,23 +23,23 @@ const navConfig = [
 },
   {
     title: 'incubator',
-    path: '/dashboard/incu-videos',
+    path: '/dashboard/categories-videos',
     icon:<AiOutlineBulb/>,
     
-    children: [
+   /* children: [
       {
         title: 'videos',
         type: 'item',
          icon: 'Savings',
-        //path: '/dashboard/video',
+        path: '/dashboard/video',
       },
       {
         title: 'docs',
         type: 'item',
          icon: 'LockIcon',
-       // path: '/dashboard/docs',
+         path: '/dashboard/docs',
       },
-    ],
+    ],*/
   },
   {/*
     title: `bids`,
