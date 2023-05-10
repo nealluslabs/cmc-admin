@@ -81,7 +81,7 @@ export default function ViewIncubatorPage() {
       </Helmet>
 
       <Container maxWidth="xl">
-      <h1 style={{position:"relative",left:"60px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>ORGANIZATION</h1>
+      <h1 style={{position:"relative",left:"60px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>{data.length? data[0].section.toUpperCase():''}</h1>
       <CssBaseline/> 
        <>
         <Grid container spacing={2} justify="center" style={{marginTop:"2rem", marginBottom:"2rem"}}>
