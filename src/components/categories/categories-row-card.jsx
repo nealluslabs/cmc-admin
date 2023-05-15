@@ -1,5 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+
+
+
+
+import {SlideDown} from 'react-slidedown'
+import 'react-slidedown/lib/slidedown.css'
+
 // import Button from '@material-ui/core/Button';
 import { TextField, FormControl, FormControlLabel, RadioGroup, Radio, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,8 +16,14 @@ import { borderRadius } from '@mui/system';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RectangleIMG from '../../assets/images/incu.png';
-import { useNavigate } from 'react-router-dom';
-import { setRequestedSection } from 'src/redux/reducers/group.slice';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import ListRowCard from 'src/components/incubator/list-card';
+import SubSectionCard from   'src/components/incubator/subSection-card';
+
+import { setRequestedSection,savePresentOpenMenu } from 'src/redux/reducers/group.slice';
 import { fetchVideoSection } from 'src/redux/actions/group.action';
 
 
@@ -61,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CategoriesRowCard ({ id, title, body, img}) {
     const [isOpen, setIsOpen] = useState(false);
+    const [dropDown, setDropDown] = useState(false);
     const [loading,setLoading] = useState(false);
     const classes = useStyles();
     const [uid, setUid] = useState(null)
@@ -69,6 +82,56 @@ function CategoriesRowCard ({ id, title, body, img}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const { allUsers, connects, isLoading } = useSelector((state) => state.user);
+
+
+    const { allSectionVideos,requestedSection } = useSelector((state) => state.group);
+    const { categoryVideos,presentOpenMenu } = useSelector((state) => state.group);
+
+    const { user} = useSelector((state) => state.auth);
+    console.log("user's info is",user)
+
+    useEffect(()=>{ 
+      //this code is responsible for the right section appearing in the dropdown
+      if(presentOpenMenu !== title){setTimeout(()=>{setDropDown(false)},300)}
+     
+      setData(categoryVideos)
+      },[categoryVideos,presentOpenMenu])
+      
+ 
+   
+    const dummyData = [
+     {id: 1, title: "General (16 mins)", desc: "Lorem ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
+     {id: 2, title: "Public (11 mins)", desc: "Tetsla ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
+     {id: 3, title: "Future (39 mins)", desc: "Lorem ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
+ ];
+
+
+ const toggleDrawer = () => {
+  setIsOpen((prevState) => !prevState)
+}
+ 
+ 
+   
+    const [data,setData] = useState(categoryVideos?categoryVideos:dummyData)
+
+    const fetchSubSectionAndDropDown  = (title)=> {
+      console.log("TITLE BEING PASSED IN IS",title)
+ if(!dropDown){
+      setLoading(true)
+      dispatch(fetchVideoSection(title))
+      dispatch(savePresentOpenMenu(title))
+     const makeRequest = async()=>{
+     
+      dispatch(fetchVideoSection(title))}
+  
+    makeRequest().then(()=>(setTimeout(()=>{setLoading(false);setDropDown(true)},600)))
+     }
+     else{
+       setDropDown(false)
+     }
+
+
+    }
 
 
     return (
@@ -119,15 +182,8 @@ function CategoriesRowCard ({ id, title, body, img}) {
               <Grid item justifyContent="flex-end" alignItems="center" sx={{mt: 5}}>
             <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}
               onClick={() => {
-                //const groupData = {id, title, body, img}
-                  setLoading(true)
-                  dispatch(fetchVideoSection(title))
-                 const makeRequest = async()=>{
-                  console.log("i have set the requested section as",title)
-                 
-                  dispatch(fetchVideoSection(title))}
-                //use a promise not setTimeout
-                makeRequest().then(()=>(setTimeout(()=>{navigate('/dashboard/incubator-videos', { state: { title } })},1300)))
+               
+                  fetchSubSectionAndDropDown(title)
               }}>
                 {loading?"Loading...":"View"}
             </Button>
@@ -142,6 +198,33 @@ function CategoriesRowCard ({ id, title, body, img}) {
               </Grid>
             </Grid>
            </Grid>
+           {/*=================THE DROPDOWN ICON =============================*/}
+          
+           <SlideDown style={{width:"100%"}}>
+            {dropDown &&
+           <Grid item xs container direction="column" spacing={6} style={{marginLeft:"10px",paddingLeft: '0px', paddingRight: '0px',transition:" height 5s ease"}}>
+                <br/><br/>
+               {data.length?
+               data.map(((dt,i) => {
+                return (
+
+                
+                    <SubSectionCard data={dt} index={i} user={user.uid}/>
+                )
+               })):
+                  
+                 <center>
+                  <br/> <br/>
+                  No videos available for this sub section.
+                  </center>
+                
+                  }
+              </Grid>
+                }
+              </SlideDown>
+            
+            {/*=================THE DROPDOWN ICON END=============================*/}
+
           </Grid>
         </Paper>
         <br/>

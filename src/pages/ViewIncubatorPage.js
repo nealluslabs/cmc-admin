@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DEFAULTIMG from '../assets/images/video-player.png';
 import ListRowCard from 'src/components/incubator/list-card';
+import SubSectionCard from   'src/components/incubator/list-card';
 
 import {fetchVideoSubsection} from 'src/redux/actions/group.action';
 
@@ -39,7 +40,9 @@ export default function ViewIncubatorPage() {
    const dispatch = useDispatch()
    const location = useLocation()
    const { allSectionVideos,requestedSection } = useSelector((state) => state.group);
-  const renderCount = useRef(0)
+   const { user} = useSelector((state) => state.auth);
+   console.log("user's info is",user)
+
   
    const dummyData = [
     {id: 1, title: "General (16 mins)", desc: "Lorem ipsum dolor sit amet consectetur tesdsjk. Eget cursus..."},
@@ -52,23 +55,15 @@ export default function ViewIncubatorPage() {
    const [pastRequest,setPastRequest] = useState('')
    const [data,setData] = useState(allSectionVideos?allSectionVideos:dummyData)
   
-   useEffect(()=>{
-   renderCount.current = allSectionVideos
-   },[])
+  console.log("first item of data is:",data[0])
 
 
 
 
   useEffect(()=>{
-    console.log("renderCount.current",renderCount.current)
-    console.log("the latest videos are:",allSectionVideos)
-   
-  
+    
     //dispatch(fetchVideoSubsection(location.state.title))
      setData(allSectionVideos)
-     console.log("all the videos from the requested section are as follows:",allSectionVideos) 
-  
-
      
   },[requestedSection])
   
@@ -81,7 +76,7 @@ export default function ViewIncubatorPage() {
       </Helmet>
 
       <Container maxWidth="xl">
-      <h1 style={{position:"relative",left:"60px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>{data.length? data[0].section.toUpperCase():''}</h1>
+      <h1 style={{position:"relative",left:"90px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>{data.length? (`${data[0].section.toUpperCase()} - ${data[0].subSection}`):''}</h1>
       <CssBaseline/> 
        <>
         <Grid container spacing={2} justify="center" style={{marginTop:"2rem", marginBottom:"2rem"}}>
@@ -103,14 +98,14 @@ export default function ViewIncubatorPage() {
       </Grid>
 
       <Grid item xs container direction="column" spacing={6} style={{paddingLeft: '100px', paddingRight: '100px'}}>
-      <h2><b>{data.length? data[0].subSection.toUpperCase():''}</b></h2>
+         <h2><b>{data.length? data[0].subSection.toUpperCase():''}</b></h2>
           <p style={{color: 'grey'}}>Lorem ipsum dolor sit amet consectetur. Eget ac risus ipsum maecenas cursus adipiscing eros. Mi viverra semper gravida pretium elementum. Pellentesque lacus ultrices luctus sit semper. Elementum tortor donec adipiscing tortor ut mollis quis. Molestie ipsum libero euismod ut eu quis.</p>
                 <br/><br/>
                {data.length?
                data.map(((dt,i) => {
                 return (
 
-                    <ListRowCard data={dt} index={i}/>
+                    <ListRowCard data={dt} index={i} user={user.uid}/>
                 )
                })):
                   

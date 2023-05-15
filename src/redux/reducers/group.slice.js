@@ -6,6 +6,7 @@ const initialState = {
        allCategories:[],
        allSectionVideos:[],
        categoryVideos:[],
+       presentOpenMenu:null,
        requestedSection:null,
        publicGroups: [], 
        privateGroups: [],
@@ -34,6 +35,9 @@ const groupSlice = createSlice({
 
 saveCategoryVideos: (state, action) => {
   state.categoryVideos = action.payload;
+},
+savePresentOpenMenu: (state, action) => {
+  state.presentOpenMenu = action.payload;
 },
   saveCategories: (state, action) => {
     state.allCategories = action.payload;
@@ -68,6 +72,7 @@ export const {
  saveAllGroup,
  saveSectionVideos,
  saveCategoryVideos,
+ savePresentOpenMenu,
  savePublicGroup,
  saveCategories,
  savePrivateGroup,

@@ -3,7 +3,7 @@ import { clearUser, loginFailed, loginSuccess, logoutFxn, signupFailed, storeUse
 import { v4 as uuidv4 } from 'uuid';
 import { notifyErrorFxn, notifySuccessFxn } from 'src/utils/toast-fxn';
 import { isItLoading, saveAllGroup ,saveEmployeer,saveCategories ,saveGroupMembers, saveMyGroup, savePrivateGroup, savePublicGroup, saveSectionVideos,saveCategoryVideos } from '../reducers/group.slice';
-
+import firebase from "firebase/app";
 
 export const createGroup = (groupData, user, file, navigate, setLoading, url) => async (dispatch) => {
   var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -636,11 +636,57 @@ export const fetchAllCategories = () => async (dispatch) => {
 };
 
 
+/*===============do fetching of categories ABOVE ===================== */
+
+
+/*===============Add to video watchlist and user watchlict BELOW ===================== */
+
+
+export const updateVideoAndUserWatchlists = (userId,videoId) => async (dispatch) => {
+  console.log('about to add title',videoId.trim())
+
+
+  db.collection("courses").doc(videoId.trim()).update({
+    watched:firebase.firestore.FieldValue.arrayUnion(userId)
+  }).then((docRef) => {
+    console.log(" course Document updated is: ", docRef);
+    
+    //dispatch(fetchWatchListData)
+    //dispatch(playlistUpdate(true));
+  })
+  .catch((error) => {
+    console.error("Error adding USER to  VIDEO watch List: ", error);
+    notifyErrorFxn("Error adding USER to  VIDEO watch List: ")
+    
+  });
 
 
 
 
-/*===============do fetching of categories ===================== */
+
+  
+  db.collection("users").doc(userId).update({
+  watched:firebase.firestore.FieldValue.arrayUnion(videoId),
+  currentlyWatching:firebase.firestore.FieldValue.arrayUnion(videoId)
+}).then((docRef) => {
+  console.log("user Document updated is: ", docRef);
+  
+  //dispatch(fetchWatchListData)
+  //dispatch(playlistUpdate(true));
+})
+.catch((error) => {
+  console.error("Error adding video  to USER watch List: ", error);
+  notifyErrorFxn("Error adding video  to USER watch List")
+  
+});
+
+
+
+
+}
+
+/*===============Add to video watchlist and user watchlict ABOVE ===================== */
+
 
 export const fetchEmployeer = (id) => async (dispatch) => {
   var user = db.collection("employers").doc(id);

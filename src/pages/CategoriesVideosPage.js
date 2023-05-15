@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography, Paper, Button, Stack, Skeleton } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress'
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import HomeBox from '../components/home/home-box';
@@ -21,7 +22,7 @@ export default function CategoriesVideoPage() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { allCategories } = useSelector((state) => state.group);
-   console.log("CATEGORIES FOR NOW ARE:",allCategories)
+   console.log("CATEGORIES ARE:",allCategories)
  
    const dummyData = [
     {id: 1, imageUrl: '', title: "Finance", body: "lorem ard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompani"},
@@ -33,7 +34,7 @@ export default function CategoriesVideoPage() {
  
  
  
-   const [data,setData] = useState(allCategories.length?allCategories:dummyData)
+   const [data,setData] = useState([])
 
 
 
@@ -41,8 +42,14 @@ export default function CategoriesVideoPage() {
 useEffect(()=>{
   dispatch(fetchAllCategories())
 
-  setTimeout(()=>{setData(allCategories)},1300)
+  setData(allCategories)
+
+ // setTimeout(()=>{setData(allCategories)},1300)
 },[])
+
+useEffect(()=>{
+setData(allCategories)
+},[allCategories])
 
 
 
@@ -59,16 +66,19 @@ const allIncubatorVideos = data?.length ? (
   })
 ) : 
 <>
-<div className="container">
+{/*<div className="container">
       <center><p className="center">No Video Categories yet</p></center>
-  </div>
+</div>*/}
+         <center>
+         <CircularProgress />
+         </center>
 </>
 
 
   return (
     <>
       <Helmet>
-        <title> incubator | Videos </title>
+        <title> Incubator | Videos </title>
       </Helmet>
       <Container maxWidth="xl">
         
@@ -77,7 +87,7 @@ const allIncubatorVideos = data?.length ? (
         <CustomSearchBar/>
         </div>
 
-      <h1 style={{position:"relative",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>VIDEOS</h1>
+      <h1 style={{position:"relative",left:"15px",fontWeight:"bold",marginBottom:"40px",fontSize:"30px"}}>VIDEOS</h1>
       {/* <SearchBox style={{ width: '100%' }} /> */}
       <br/>
       {/* <Grid  container direction="row" justifyContent="flex-end" alignItems="flex-end">
@@ -87,7 +97,15 @@ const allIncubatorVideos = data?.length ? (
     </Grid>
       <br/> */}
 
-        {allIncubatorVideos}
+        {data.length === 0 ?
+       
+        
+        <center>
+         <CircularProgress />
+         </center> 
+         :
+        allIncubatorVideos
+        }
   </Container>
       
      

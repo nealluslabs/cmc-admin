@@ -127,7 +127,7 @@ const [noticeFeed,setNoticeFeed] = useState(candidates.length?candidates:rowData
   const renderContent = (
     <>
       <Box sx={{ py: 2, px: 3 }}>
-      <div style={{ display: "flex", justifyContent: "flex-start", marginTop: '10px' }}>
+      <div style={{ display: "flex", justifyContent: "flex-start", marginTop: '10px',marginLeft:"-20px" }}>
         <Button
           variant="contained"
           style={{
