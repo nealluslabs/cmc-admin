@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { Button } from '@mui/material';
 import { useDispatch,useSelector } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import {updateVideoAndUserWatchlists} from 'src/redux/actions/group.action'
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const ListRowCard = ({data,index,user}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("THE VIDEO ID IS",data.uid)
 
   const sendToWatchList = (userId,videoId)=>{
@@ -48,8 +50,8 @@ const ListRowCard = ({data,index,user}) => {
       </div>
 <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}>
               &nbsp;&nbsp;
-              <b onClick={()=>{sendToWatchList(user,data.uid)}}><span>Watch</span></b> 
-            <LockIcon />
+              <b onClick={()=>{navigate('/dashboard/courses-stats', { state: { uid:data.uid } })}}><span>Stats</span></b> 
+            
      </Button>
     </div>
   );

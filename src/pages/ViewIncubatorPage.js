@@ -55,7 +55,7 @@ export default function ViewIncubatorPage() {
    const [pastRequest,setPastRequest] = useState('')
    const [data,setData] = useState(allSectionVideos?allSectionVideos:dummyData)
   
-  console.log("first item of data is:",data[0])
+  console.log("first item of data is:",allSectionVideos)
 
 
 
@@ -64,7 +64,7 @@ export default function ViewIncubatorPage() {
     
     //dispatch(fetchVideoSubsection(location.state.title))
      setData(allSectionVideos)
-     
+     console.log("SUPPOSED VIDEOS",allSectionVideos)
   },[requestedSection])
   
 

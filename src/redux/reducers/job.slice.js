@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   jobs: [],
+  courses:[],
+  userCourses:[],
+  usersTaken:[],
   job: null,
   error: '',
   message: '',
@@ -13,6 +16,21 @@ const jobSlice = createSlice({
   reducers: {
     fetchJobs: (state, action) => {
         state.jobs = action.payload;
+        state.error = '';
+        state.message = '';
+      },
+      fetchCourses: (state, action) => {
+        state.courses = action.payload;
+        state.error = '';
+        state.message = '';
+      },
+      saveUserCourses: (state, action) => {
+        state.userCourses = action.payload;
+        state.error = '';
+        state.message = '';
+      },
+      saveUsersTaken: (state, action) => {
+        state.usersTaken = action.payload;
         state.error = '';
         state.message = '';
       },
@@ -38,6 +56,9 @@ const { actions, reducer } = jobSlice;
 export const {
  fetchJobs,
  fetchSingleJob,
+ fetchCourses,
+ saveUserCourses,
+ saveUsersTaken,
 } = actions;
 
 export default reducer;

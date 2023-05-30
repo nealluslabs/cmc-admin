@@ -126,7 +126,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CJobList({jobs}) {
+export default function ContractorStatsList({jobs}) {
   //search function
   const dispatch = useDispatch();
   const [jobList, setJobList] = useState(jobs);
@@ -148,7 +148,7 @@ export default function CJobList({jobs}) {
 
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - jobList.length) : 0;
@@ -162,7 +162,7 @@ export default function CJobList({jobs}) {
     setPage(0);
   };
   const viewJobsFxn = (id) => {
-    navigate(`/dashboard/contractor-stats/`,{ state: { id:id } });
+    navigate(`/dashboard/view-users/${id}`);
   };
 
   const deleteJobFxn = (id) => {
@@ -225,15 +225,15 @@ export default function CJobList({jobs}) {
       </div>*/}
       
       <br/>
-      <p style={{fontSize: '26px', marginLeft: '5px', color: 'black'}}><b>ALL CMC USERS</b></p><br/>
-      <hr />
-      <TableContainer component={Paper}>
+      {/*<p style={{fontSize: '26px', marginLeft: '5px', color: 'black'}}><b>ALL CMC USERS</b></p><br/>
+      <hr />*/}
+     <TableContainer component={Paper}>
         <Table sx={{ maxWidth: 1500,tableLayout:"fixed" }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell align="right">Badge</StyledTableCell>
-              <StyledTableCell align="right">Registered</StyledTableCell>
+              <StyledTableCell>Video Title</StyledTableCell>
+              <StyledTableCell align="right">Section</StyledTableCell>
+              <StyledTableCell align="right">Sub Section</StyledTableCell>
               
               {/*<StyledTableCell align="right">Industry</StyledTableCell>
               <StyledTableCell align="center">State</StyledTableCell>
@@ -250,30 +250,30 @@ export default function CJobList({jobs}) {
                 )
               : jobList
             ).map((row) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.uid}>
                 <TableCell component="th" scope="row">
-                  {row.businessName}
+                  {row.title}
                 </TableCell>
                 <TableCell style={{ width: 140 }} align="right">
-                  {row.email}
+                  {row.section}
                 </TableCell>
                 {/*<TableCell style={{ width: 140 }} align="right">
                 {row.accountCreated &&typeof(row.accountCreated) !== "string"  ?(new Date(row.accountCreated.seconds*1000)).toDateString():row.accountCreated}
                 </TableCell>*/}
-                
+               
                 <TableCell style={{ width: 140 }} align="right">
-                {row.registeredOn &&typeof(row.registeredOn) !== "string"  ?(new Date(row.registeredOn.seconds*1000)).toDateString():row.accountCreated}
+                  {row.subSection}
                 </TableCell>
 
                
 
                 <TableCell style={{ width: 180 }} align="right">
-                  <Button
+                 {/*<Button
                     type="submit"
-                    // fullWidth
+                    
                     variant="contained"
                     style={{
-                      backgroundColor: '#000000' /*"#60A1EC"*/,
+                      backgroundColor: '#000000',
                       color: "white",
                       width: "70%",
                       fontSize: "15px",
@@ -282,7 +282,7 @@ export default function CJobList({jobs}) {
                     onClick={() => viewJobsFxn(row.uid.trim())}
                   >
                     VIEW
-                  </Button>
+                  </Button>*/}
                 </TableCell>
 
 

@@ -4,7 +4,8 @@ import {AiOutlineHome} from 'react-icons/ai'
  import {AiOutlineBulb} from 'react-icons/ai'
  import {CgToolbox} from 'react-icons/cg'
  import {FiSettings} from 'react-icons/fi' 
- import {AiOutlineLock} from 'react-icons/ai'
+ import {AiOutlineInbox} from 'react-icons/ai'
+ import {IoIosPerson} from 'react-icons/io'
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
@@ -16,9 +17,15 @@ const navConfig = [
     // icon: icon('ic_analytics'),
   },
   {
+    title: 'Contractors',
+    path: '/dashboard/contractor-list',
+    icon:<IoIosPerson/>,
+    // icon: icon('ic_analytics'),
+  },
+  {
     title: 'Admin Feed',
     path: '/dashboard/feed',
-    icon:<AiOutlineWifi/>
+    icon:<AiOutlineInbox/>
     
 },
   {
@@ -48,12 +55,12 @@ const navConfig = [
     iconLabel: 'msg',
     icon:<CgToolbox/>
 */},
-  {
+  {/*
     title: 'settings',
      path: '#',
-   // iconLabel: 'settings',
+   iconLabel: 'settings',
    icon:<FiSettings/>
- },
+*/},
 ];
 
 export default navConfig;

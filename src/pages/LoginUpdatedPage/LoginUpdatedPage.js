@@ -14,7 +14,7 @@ iconUser: "bx-user-svg-1.png",*/
 
 const loginPageData = {
  
-  spanText1: "Login to access",
+  spanText1: "Admin Login",
   spanText2: "Email Address",
   spanText3: "Password",
   spanText4: "Login",
@@ -60,7 +60,7 @@ const loginPageData = {
       
       <div className="login-content" >
      
-      <h2 style={{position:"absolute" ,top:"35%"}}>Login to access</h2>
+      <h2 style={{position:"absolute" ,top:"35%"}}>Admin Login</h2>
        <LoginForm />
        
 

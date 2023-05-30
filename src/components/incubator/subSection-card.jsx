@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { Button } from '@mui/material';
@@ -36,12 +36,17 @@ const SubSectionCard = ({data,index,user}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading,setLoading] =useState(false)
-  console.log("THE VIDEO ID IS",data.uid)
+ 
 
   const sendToWatchList = (userId,videoId)=>{
     //console.log("this function is under construction")
     dispatch(updateVideoAndUserWatchlists(userId,videoId))
   }
+
+  useEffect(()=>{
+    console.log("title per row is: ",data.title)
+    console.log("THE VIDEO ID IS",data.uid)
+  },[])
 
   return (
     <div className={classes.row}>
@@ -55,9 +60,9 @@ const SubSectionCard = ({data,index,user}) => {
               onClick={() => {
                 //const groupData = {id, title, body, img}
                 setLoading(true)
-                dispatch(setRequestedSection(data.title))
+                dispatch(setRequestedSection(data.title.trim()))
                
-               dispatch(fetchVideoSubsection(data.title))
+               dispatch(fetchVideoSubsection(data.title.trim()))
                 const makeRequest = async()=>{
                   console.log("i have set the requested section as",data.title)
                   dispatch(setRequestedSection(data.title))

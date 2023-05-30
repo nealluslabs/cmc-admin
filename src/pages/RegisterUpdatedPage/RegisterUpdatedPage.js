@@ -15,7 +15,7 @@ iconUser: "bx-user-svg-1.png",*/
 
 const loginPageData = {
  
-  spanText1: "Login to access",
+  spanText1: "Admin Login",
   spanText2: "Email Address",
   spanText3: "Password",
   spanText4: "Login",

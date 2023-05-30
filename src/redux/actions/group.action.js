@@ -292,13 +292,24 @@ export const fetchGroups = (adminID) => async (dispatch) => {
    .get()
    .then((snapshot) => {
      const allSectionVids = snapshot.docs.map((doc) => ({ ...doc.data() }));
+     const sortFunction = (array)=>{
+      if (array.length){
+        return  array.sort((a,b)=>(a.subLevel - b.subLevel))
+       }else{
+        return []
+       }
+     }
+     
+     const sortedSectionVids = sortFunction(allSectionVids)
+
+
    if (allSectionVids.length > 0) {
      //dispatch(isItLoading(false));
-     console.log("ALL sections FROM DATABASE(FOR THIS CATEGORY):", allSectionVids);
-     dispatch(saveCategoryVideos(allSectionVids));
+     console.log("ALL sections FROM DATABASE(FOR THIS CATEGORY):", sortedSectionVids);
+     dispatch(saveCategoryVideos(sortedSectionVids));
    } else {
       // dispatch(isItLoading(false));
-      dispatch(saveCategoryVideos(allSectionVids));
+      dispatch(saveCategoryVideos(sortedSectionVids));
        console.log("No sections for this category!");
    }
  }).catch((error) => {
@@ -311,17 +322,29 @@ export const fetchGroups = (adminID) => async (dispatch) => {
 
   //dispatch(isItLoading(true));
   db.collection("courses")
-  .where('subSection', '==', chosenSection)
+  .where('subSection', '==', chosenSection.trim())
    .get()
    .then((snapshot) => {
      const allSectionVids = snapshot.docs.map((doc) => ({ ...doc.data() }));
-   if (allSectionVids.length > 0) {
+    console.log("ALL SECTION VIDS FOR ADMIN IS:",allSectionVids)
+     const sortFunction = (array)=>{
+      if (array.length){
+        return  array.sort((a,b)=>(Number(a.levelInfo.underSubLevel.replaceAll(".","")) - Number(b.levelInfo.underSubLevel.replaceAll(".","")) ))
+       }else{
+        return []
+       }
+     }
+     
+     const sortedSectionVids = sortFunction(allSectionVids)
+
+
+   if (sortedSectionVids.length > 0) {
      //dispatch(isItLoading(false));
-     console.log("FRESH FROM DATABASE:", allSectionVids);
-     dispatch(saveSectionVideos(allSectionVids));
+     console.log("SORTED FROM DATABASE:", sortedSectionVids);
+     dispatch(saveSectionVideos(sortedSectionVids));
    } else {
       // dispatch(isItLoading(false));
-      dispatch(saveSectionVideos(allSectionVids));
+      dispatch(saveSectionVideos(sortedSectionVids));
        console.log("No groups!");
    }
  }).catch((error) => {
