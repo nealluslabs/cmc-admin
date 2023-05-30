@@ -25,7 +25,7 @@ const jobSlice = createSlice({
         state.message = '';
       },
       saveUserCourses: (state, action) => {
-        state.userCourses = action.payload;
+        state.userCourses = action.payload
         state.error = '';
         state.message = '';
       },

@@ -23,6 +23,7 @@ import { Link, NavLink, useNavigate} from "react-router-dom";
 //import useRequest from "../../hooks/use-request";
 import { fetchJobs } from "../../redux/actions/job.action";
 import Skeleton from '@mui/material/Skeleton';
+import { getUserCourses } from "src/redux/actions/job.action";
 import {Typography,CardMedia,} from '@material-ui/core';
 //import CoolerBoxIMG from '../../assets/images/save-money.png';
 
@@ -148,6 +149,7 @@ export default function CJobList({jobs}) {
 
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
+  const [loading,setLoading] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const emptyRows =
@@ -162,8 +164,15 @@ export default function CJobList({jobs}) {
     setPage(0);
   };
   const viewJobsFxn = (id) => {
-    navigate(`/dashboard/contractor-stats/`,{ state: { id:id } });
+    dispatch(getUserCourses(id.trim())); 
+    setLoading(true)
+    setTimeout(()=>{
+    navigate(`/dashboard/contractor-stats/`,{ state: { id:id } })}
+    ,
+    2000
+    )
   };
+
 
   const deleteJobFxn = (id) => {
    const preserveId = id
@@ -252,10 +261,10 @@ export default function CJobList({jobs}) {
             ).map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.businessName}
+                  {row.firstName + row.lastName}
                 </TableCell>
                 <TableCell style={{ width: 140 }} align="right">
-                  {row.email}
+                  {row.badgesEarned?row.badgesEarned:0}
                 </TableCell>
                 {/*<TableCell style={{ width: 140 }} align="right">
                 {row.accountCreated &&typeof(row.accountCreated) !== "string"  ?(new Date(row.accountCreated.seconds*1000)).toDateString():row.accountCreated}
@@ -281,7 +290,7 @@ export default function CJobList({jobs}) {
                     sx={{ mt: 7, mb: 2 }}
                     onClick={() => viewJobsFxn(row.uid.trim())}
                   >
-                    VIEW
+                   {'VIEW'}
                   </Button>
                 </TableCell>
 

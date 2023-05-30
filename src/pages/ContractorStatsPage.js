@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation} from 'react-router-dom';
+
 import Container from '@mui/material/Container';
 //import Layout from "../components/layout";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,6 +9,7 @@ import { useNavigate,Link } from 'react-router-dom';
 //import CJobList from "../components/home/c-job-list";
 import ContractorStatsList from "../components/contractor/contractor-stats-list";
 import { getUserCourses } from "../redux/actions/job.action";
+import { useLocation} from 'react-router-dom';
 import {Skeleton} from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
 import CJobList from "../components/home/c-job-list";

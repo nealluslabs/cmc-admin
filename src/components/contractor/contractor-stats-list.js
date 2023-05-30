@@ -27,6 +27,8 @@ import {Typography,CardMedia,} from '@material-ui/core';
 //import CoolerBoxIMG from '../../assets/images/save-money.png';
 
 import { notifyErrorFxn, notifySuccessFxn } from 'src/utils/toast-fxn';
+import { getUserCourses } from "src/redux/actions/job.action";
+import { useLocation} from 'react-router-dom';
 
 
 import { useDispatch, useSelector } from "react-redux";
@@ -130,7 +132,9 @@ export default function ContractorStatsList({jobs}) {
   //search function
   const dispatch = useDispatch();
   const [jobList, setJobList] = useState(jobs);
-  console.log("all users are:",jobs)
+  const location = useLocation()
+
+  console.log("all watched videos are:",jobs)
   const [searched, setSearched] = useState("");
   const classes = useStyles();
   const requestSearch = (searchedVal) => {
@@ -139,6 +143,14 @@ export default function ContractorStatsList({jobs}) {
     });
     setJobList(filteredRows);
   };
+
+ 
+
+  useEffect(() => {
+    dispatch(getUserCourses(location.state.id.trim()));  
+   
+   }, [location.state.id])
+ 
 
   const cancelSearch = () => {
     setSearched("");
@@ -149,6 +161,7 @@ export default function ContractorStatsList({jobs}) {
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [emptyIndicator,setEmptyIndicator] = React.useState({uid:0,title:"this user has",section:"not watched",subSection:"any videos yet!"})
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - jobList.length) : 0;
@@ -248,7 +261,7 @@ export default function ContractorStatsList({jobs}) {
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
-              : jobList
+              : (jobs.length>0?jobList:emptyIndicator)
             ).map((row) => (
               <TableRow key={row.uid}>
                 <TableCell component="th" scope="row">

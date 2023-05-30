@@ -269,7 +269,7 @@ export default function CoursesStatsList({jobs}) {
                
 
                 <TableCell style={{ width: 180 }} align="center">
-                {row.watched[0]}
+                {/*row.watched[0]*/}
                  
                  {/* <Button
                     type="submit"

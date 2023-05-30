@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import { useDispatch,useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {updateVideoAndUserWatchlists} from 'src/redux/actions/group.action'
+import { getCourses } from "src/redux/actions/job.action";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -50,7 +51,7 @@ const ListRowCard = ({data,index,user}) => {
       </div>
 <Button variant="contained" style={{minHeight: '45px', minWidth: '145px', backgroundColor: 'black', }}>
               &nbsp;&nbsp;
-              <b onClick={()=>{navigate('/dashboard/courses-stats', { state: { uid:data.uid } })}}><span>Stats</span></b> 
+              <b onClick={()=>{dispatch(getCourses(data.uid));setTimeout(()=>{navigate('/dashboard/courses-stats', { state: { uid:data.uid } })},2000)}}><span>Stats</span></b> 
             
      </Button>
     </div>
